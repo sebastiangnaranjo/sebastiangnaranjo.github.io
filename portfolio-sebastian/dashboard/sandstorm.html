@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporte de Avance — Sandstorm GAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red:      #B22020;
+  --red-dark: #8a1818;
+  --teal:     #1a7a6e;
+  --ink:      #1a1a1a;
+  --ink-mid:  #444;
+  --ink-soft: #888;
+  --ink-faint:#ccc;
+  --white:    #fff;
+  --off:      #f6f4f2;
+  --border:   #e5e0dc;
+  --amber:    #c97a00;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--off);color:var(--ink);font-family:'Barlow',sans-serif;font-size:14px;}
+.navbar{background:var(--white);border-bottom:3px solid var(--red);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:72px;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.08);}
+.logo-grupo{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:400;letter-spacing:5px;color:var(--ink-mid);text-transform:uppercase;margin-bottom:1px;}
+.logo-sandstorm{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:var(--red);letter-spacing:1px;line-height:1;text-transform:uppercase;}
+.logo-gam-bar{background:var(--red);padding:1px 6px 2px;display:inline-block;margin-top:2px;}
+.logo-gam-bar span{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#fff;letter-spacing:3px;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-project{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;color:var(--ink-soft);text-transform:uppercase;border-right:1px solid var(--border);padding-right:16px;}
+.btn-dl{display:flex;align-items:center;gap:8px;background:var(--red);color:#fff;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;transition:background .2s,transform .15s;}
+.btn-dl:hover{background:var(--red-dark);transform:translateY(-1px);}
+.btn-dl svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+#report-content{padding:48px 56px 72px;max-width:1500px;margin:0 auto;}
+.report-header{display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;margin-bottom:48px;padding-bottom:28px;border-bottom:1px solid var(--border);position:relative;}
+.report-header::before{content:'';position:absolute;bottom:-1px;left:0;width:140px;height:3px;background:var(--red);}
+.report-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:4px;color:var(--red);text-transform:uppercase;margin-bottom:10px;}
+.report-title{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;line-height:.95;letter-spacing:-.5px;text-transform:uppercase;}
+.report-title span{display:block;color:var(--red);}
+.meta-date{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--ink-soft);text-transform:uppercase;margin-bottom:6px;text-align:right;}
+.meta-badge{display:inline-block;background:var(--ink);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 12px;text-transform:uppercase;}
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-bottom:40px;}
+.kpi-card{background:var(--white);border-top:4px solid var(--border);padding:22px 18px 18px;transition:border-color .2s;}
+.kpi-card:hover,.kpi-card.featured{border-top-color:var(--red);}
+.kpi-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px;}
+.kpi-value{font-family:'Barlow Condensed',sans-serif;font-size:46px;font-weight:900;line-height:1;letter-spacing:-2px;color:var(--ink);}
+.kpi-value.red{color:var(--red);}.kpi-value.teal{color:var(--teal);}.kpi-value.amber{color:var(--amber);}
+.kpi-value.money{font-size:28px;letter-spacing:-1px;margin-top:4px;}
+.kpi-sub{font-size:11px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+.section-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;margin-top:36px;}
+.section-bar{width:4px;height:20px;background:var(--red);flex-shrink:0;}
+.section-title-lbl{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink-mid);}
+.section-head::after{content:'';flex:1;height:1px;background:var(--border);}
+.gauge-area-row{display:grid;grid-template-columns:340px 1fr;gap:3px;margin-bottom:8px;}
+.gauge-panel{background:var(--white);border:1px solid var(--border);padding:32px 24px 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.gauge-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:20px;text-align:center;}
+#gaugeCanvas{display:block;}
+.gauge-bottom{text-align:center;margin-top:16px;}
+.gauge-pct-big{font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:900;line-height:1;color:var(--red);letter-spacing:-2px;}
+.gauge-pct-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);margin-top:4px;}
+.gauge-amounts{display:flex;gap:20px;justify-content:center;margin-top:14px;}
+.gauge-amt{text-align:center;}
+.gauge-amt-val{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--ink);}
+.gauge-amt-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);margin-top:2px;}
+.chart-panel{background:var(--white);border:1px solid var(--border);padding:28px 28px 20px;position:relative;}
+.chart-legend{display:flex;gap:20px;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-mid);}
+.leg-line{width:24px;height:4px;border-radius:2px;}
+.zoom-btn{position:absolute;top:16px;right:16px;background:var(--off);border:1px solid var(--border);cursor:pointer;padding:6px 10px;display:flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);transition:background .15s,color .15s;border-radius:2px;}
+.zoom-btn:hover{background:var(--red);color:#fff;border-color:var(--red);}
+.zoom-btn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.zoom-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,10,.82);z-index:500;align-items:center;justify-content:center;padding:32px;}
+.zoom-overlay.active{display:flex;}
+.zoom-box{background:var(--white);border:2px solid var(--border);padding:32px;width:100%;max-width:1200px;max-height:90vh;overflow-y:auto;position:relative;}
+.zoom-close{position:absolute;top:16px;right:16px;background:var(--red);border:none;color:#fff;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;}
+.zoom-close:hover{background:var(--red-dark);}
+.zoom-header{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--border);}
+.heatmap-panel{background:var(--white);border:1px solid var(--border);padding:24px 28px;margin-bottom:8px;overflow-x:auto;position:relative;}
+.hm-table{border-collapse:separate;border-spacing:3px;width:100%;table-layout:fixed;}
+.hm-table th{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ink-soft);text-align:center;padding:0 1px 8px;white-space:nowrap;overflow:hidden;}
+.hm-table th.row-head{text-align:right;padding-right:8px;width:62px;}
+.hm-table td.row-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--ink-mid);text-align:right;padding-right:8px;white-space:nowrap;width:62px;overflow:hidden;max-width:62px;}
+.hm-table td.cell{height:26px;text-align:center;vertical-align:middle;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;border-radius:1px;transition:transform .12s,box-shadow .12s;cursor:default;}
+.hm-table td.cell:hover{transform:scale(1.25);z-index:10;box-shadow:0 3px 14px rgba(0,0,0,.18);position:relative;}
+.c0{background:#f4f2f0;color:#ccc;}.c1{background:#fde8e8;color:#a83232;}.c2{background:#f9c9c9;color:#8a1818;}.c3{background:#f5a8a8;color:#6e0e0e;}.c4{background:#ee7070;color:#fff;}.c5{background:#d42a2a;color:#fff;}
+tr.total-row td.row-label{color:var(--ink);font-weight:800;font-size:9px;letter-spacing:.5px;}
+tr.total-row td.cell{font-weight:800;font-size:11px;}
+.c-tot-active{background:var(--red-dark)!important;color:#fff!important;}
+.c-tot-zero{background:#f4f2f0!important;color:#ccc!important;}
+.legend-row{display:flex;gap:16px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.leg-sq{display:flex;align-items:center;gap:7px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;color:var(--ink-soft);text-transform:uppercase;}
+.leg-dot{width:13px;height:13px;border-radius:1px;flex-shrink:0;}
+.eco-panel{background:var(--white);border:1px solid var(--border);overflow-x:auto;margin-bottom:8px;position:relative;}
+.eco-table{width:100%;border-collapse:collapse;min-width:1100px;}
+.eco-table thead tr{background:var(--ink);}
+.eco-table thead th{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:12px 10px;text-align:center;white-space:nowrap;}
+.eco-table thead th:first-child{text-align:left;background:var(--red);min-width:72px;}
+.eco-table tbody tr{border-bottom:1px solid var(--border);}
+.eco-table tbody tr:hover{background:#fdf0f0;}
+.eco-table tbody tr.grand{background:var(--ink)!important;}
+.eco-table tbody tr.grand td{color:#fff!important;font-weight:800;font-size:13px;}
+.eco-table tbody tr.grand td:first-child{background:var(--red-dark)!important;}
+.eco-table tbody td{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:500;padding:8px 10px;text-align:center;color:var(--ink-mid);white-space:nowrap;}
+.eco-table tbody td:first-child{font-weight:800;font-size:13px;color:#fff;background:var(--red);text-align:left;letter-spacing:1px;}
+.eco-table tbody tr:nth-child(even) td:not(:first-child){background:rgba(0,0,0,.018);}
+.pct-wrap{display:flex;align-items:center;gap:7px;justify-content:center;}
+.pct-bg{width:48px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;flex-shrink:0;}
+.pct-fill{height:100%;border-radius:3px;}
+.pct-txt{font-size:12px;font-weight:700;color:var(--ink);min-width:40px;text-align:left;}
+.pill{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:1px;}
+.pill-ok{background:#e6f5ee;color:#1a7a4b;}.pill-warn{background:#fff4e0;color:#c97a00;}.pill-bad{background:#fde8e8;color:var(--red);}
+.days-warn{color:var(--amber);font-weight:700;}.days-bad{color:var(--red);font-weight:700;}
+.report-footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.footer-logo-bar{background:var(--red);padding:3px 10px;}
+.footer-logo-bar span{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;color:#fff;letter-spacing:2px;}
+.footer-left{display:flex;align-items:center;gap:16px;}
+.footer-text{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:500;letter-spacing:1.5px;color:var(--ink-soft);text-transform:uppercase;}
+.footer-right{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;color:var(--ink-faint);text-transform:uppercase;}
+@media (max-width: 1024px) {
+  #report-content { padding: 32px 32px 56px; }
+  .navbar { padding: 0 28px; }
+  .nav-project { display: none; }
+  .report-title { font-size: 36px; }
+  #kpi-block { grid-template-columns: repeat(2,1fr) !important; }
+  #kpi-block > div:nth-child(5),#kpi-block > div:nth-child(6) { grid-column: span 2 !important; }
+  .gauge-area-row { grid-template-columns: 1fr !important; }
+  #analisis-box > div:last-child { grid-template-columns: 1fr !important; gap: 18px !important; }
+}
+@media (max-width: 640px) {
+  .navbar { padding: 0 16px; height: 60px; }
+  .logo-grupo { font-size: 8px; letter-spacing: 3px; }
+  .logo-sandstorm { font-size: 20px; }
+  .logo-gam-bar span { font-size: 14px; }
+  .nav-project { display: none; }
+  .btn-dl { padding: 8px 14px; font-size: 11px; letter-spacing: 1px; }
+  .btn-dl span { display: none; }
+  #report-content { padding: 20px 16px 48px; }
+  .report-header { grid-template-columns: 1fr !important; margin-bottom: 24px; padding-bottom: 18px; }
+  .report-header > div:last-child { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+  .meta-date { text-align: left; }
+  .report-eyebrow { font-size: 10px; margin-bottom: 6px; }
+  .report-title { font-size: 28px; line-height: 1; }
+  #kpi-block { grid-template-columns: 1fr !important; gap: 3px !important; margin-bottom: 12px !important; }
+  #kpi-block > div:nth-child(5),#kpi-block > div:nth-child(6) { grid-column: span 1 !important; }
+  #kpi-block > div { padding: 18px 16px 14px !important; }
+  #analisis-box { padding: 16px 16px !important; margin-bottom: 12px !important; }
+  #analisis-box > div:last-child { grid-template-columns: 1fr !important; gap: 20px !important; }
+  .section-head { margin-top: 24px; margin-bottom: 12px; }
+  .section-title-lbl { font-size: 11px; }
+  .gauge-area-row { grid-template-columns: 1fr !important; gap: 6px !important; }
+  .gauge-panel { padding: 24px 20px !important; }
+  #gaugeCanvas { width: 240px !important; height: 144px !important; }
+  .gauge-pct-big { font-size: 36px !important; }
+  .chart-panel { padding: 20px 16px 16px !important; }
+  .heatmap-panel { padding: 16px 12px !important; overflow-x: auto !important; }
+  .hm-table { table-layout: auto !important; width: auto !important; min-width: max-content !important; }
+  .hm-table td.cell { width: 28px !important; height: 22px !important; font-size: 10px !important; }
+  .hm-table th { font-size: 8px !important; }
+  .eco-panel { overflow-x: auto !important; }
+  .eco-table { min-width: 900px !important; }
+  .zoom-btn { display: none !important; }
+  .zoom-overlay { padding: 0; }
+  .zoom-box { padding: 20px 16px; max-height: 100vh; border-radius: 0; border: none; }
+  .report-footer { flex-direction: column; gap: 10px; align-items: flex-start; margin-top: 32px; }
+}
+@media print {
+  @page { size: A4 portrait; margin: 16mm 14mm 16mm 14mm; }
+  @page :first { margin-top: 12mm; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; box-shadow: none !important; }
+  html, body { background: #fff !important; font-size: 10pt; }
+  .navbar, .zoom-btn, .zoom-overlay { display: none !important; }
+  #report-content { padding: 0 !important; max-width: 100% !important; width: 100% !important; }
+  .report-header { display: grid !important; grid-template-columns: 1fr auto !important; align-items: end !important; margin-bottom: 14px !important; padding-bottom: 12px !important; border-bottom: 2px solid #B22020 !important; }
+  .report-title { font-size: 26pt !important; line-height: 1 !important; }
+  .report-eyebrow { font-size: 8pt !important; margin-bottom: 6px !important; }
+  .meta-date { font-size: 9pt !important; }
+  .meta-badge { font-size: 8pt !important; padding: 3px 8px !important; }
+  #kpi-block { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 4px !important; margin-bottom: 0 !important; page-break-after: always !important; }
+  #kpi-block > div:nth-child(5) { grid-column: span 2 !important; }
+  #kpi-block > div:nth-child(6) { grid-column: span 2 !important; }
+  #kpi-block > div { padding: 16px 14px 14px !important; border-top-width: 4px !important; min-height: 80px !important; }
+  #kpi-block > div:nth-child(1) > div:nth-child(2),#kpi-block > div:nth-child(2) > div:nth-child(2) { font-size: 52pt !important; letter-spacing: -3px !important; }
+  #kpi-block > div:nth-child(3) > div:nth-child(2),#kpi-block > div:nth-child(4) > div:nth-child(2) { font-size: 28pt !important; letter-spacing: -1px !important; }
+  #analisis-box { page-break-before: always !important; page-break-inside: avoid !important; padding: 18px 20px !important; margin-bottom: 14px !important; border-left-width: 5px !important; }
+  #analisis-box > div:last-child { display: grid !important; grid-template-columns: 1fr 1fr 1fr !important; gap: 16px !important; }
+  .section-head { margin-top: 14px !important; margin-bottom: 8px !important; page-break-after: avoid !important; }
+  .gauge-area-row { display: grid !important; grid-template-columns: 200px 1fr !important; gap: 6px !important; page-break-inside: avoid !important; width: 100% !important; }
+  .gauge-panel { padding: 14px 12px 10px !important; }
+  #gaugeCanvas { width: 170px !important; height: 102px !important; }
+  .gauge-pct-big { font-size: 22pt !important; }
+  #areaChart { height: 200px !important; }
+  .heatmap-panel { page-break-before: always !important; page-break-inside: avoid !important; padding: 16px !important; overflow: visible !important; margin-bottom: 0 !important; width: 100% !important; }
+  .hm-table { border-spacing: 2px !important; width: 100% !important; table-layout: fixed !important; }
+  .hm-table th { font-size: 7pt !important; padding: 0 0 5px !important; }
+  .hm-table td.cell { height: 18px !important; font-size: 7pt !important; }
+  .eco-panel { page-break-before: always !important; overflow: visible !important; width: 100% !important; border: none !important; }
+  .eco-table { min-width: unset !important; width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
+  .eco-table thead th { font-size: 7pt !important; padding: 6px 4px !important; white-space: normal !important; word-break: break-word !important; line-height: 1.25 !important; }
+  .eco-table tbody td { font-size: 8pt !important; padding: 5px 4px !important; }
+  .eco-table th:nth-child(1),.eco-table td:nth-child(1){width:6%!important;}
+  .eco-table th:nth-child(2),.eco-table td:nth-child(2){width:3.5%!important;}
+  .eco-table th:nth-child(3),.eco-table td:nth-child(3){width:3.5%!important;}
+  .eco-table th:nth-child(4),.eco-table td:nth-child(4){width:8%!important;}
+  .eco-table th:nth-child(5),.eco-table td:nth-child(5){width:8%!important;}
+  .eco-table th:nth-child(6),.eco-table td:nth-child(6){width:7%!important;}
+  .eco-table th:nth-child(7),.eco-table td:nth-child(7){width:11%!important;}
+  .eco-table th:nth-child(8),.eco-table td:nth-child(8){width:10%!important;}
+  .eco-table th:nth-child(9),.eco-table td:nth-child(9){width:11%!important;}
+  .eco-table th:nth-child(10),.eco-table td:nth-child(10){width:8%!important;}
+  .eco-table th:nth-child(11),.eco-table td:nth-child(11){width:11%!important;}
+  .eco-table th:nth-child(12),.eco-table td:nth-child(12){width:6%!important;}
+  .eco-table th:nth-child(13),.eco-table td:nth-child(13){width:6%!important;}
+  .report-footer { margin-top: 12px !important; padding-top: 8px !important; border-top: 1px solid #e5e0dc !important; }
+}
+</style>
+
+<style>
+.money-blur { filter: blur(5px); user-select: none; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div>
+    <div class="logo-grupo">G R U P O</div>
+    <div class="logo-sandstorm">SANDSTORM<sup style="font-size:10px;vertical-align:super">®</sup></div>
+    <div class="logo-gam-bar"><span>GAM</span></div>
+  </div>
+  <div class="nav-right">
+    <div class="nav-project">Control Financiero Obra</div>
+    <button class="btn-dl" id="btnPDF">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Descargar PDF
+    </button>
+  </div>
+</nav>
+
+<div class="zoom-overlay" id="zoomArea">
+  <div class="zoom-box">
+    <button class="zoom-close" onclick="closeZoom('zoomArea')">✕</button>
+    <div class="zoom-header">Programa vs Avance de Obra</div>
+    <div class="chart-legend">
+      <div class="leg"><div class="leg-line" style="background:#1a7a6e"></div>Total Pilas Programadas</div>
+      <div class="leg"><div class="leg-line" style="background:#B22020"></div>Total Pilas Ejecutadas</div>
+    </div>
+    <svg id="areaChartZoom" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;height:460px;"></svg>
+  </div>
+</div>
+
+<div class="zoom-overlay" id="zoomHeat">
+  <div class="zoom-box" style="max-width:98vw;">
+    <button class="zoom-close" onclick="closeZoom('zoomHeat')">✕</button>
+    <div class="zoom-header">Distribución de Pilas Ejecutadas por Posición</div>
+    <div class="legend-row" style="margin-bottom:16px">
+      <div class="leg-sq"><div class="leg-dot" style="background:#fde8e8"></div>1</div>
+      <div class="leg-sq"><div class="leg-dot" style="background:#f9c9c9"></div>2</div>
+      <div class="leg-sq"><div class="leg-dot" style="background:#f5a8a8"></div>3</div>
+      <div class="leg-sq"><div class="leg-dot" style="background:#ee7070"></div>4</div>
+      <div class="leg-sq"><div class="leg-dot" style="background:#d42a2a"></div>5+</div>
+      <div class="leg-sq"><div class="leg-dot" style="background:#8a1818"></div>Total col.</div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="hm-table" id="heatmapZoom" style="border-spacing:5px;"></table>
+    </div>
+  </div>
+</div>
+
+<div id="report-content">
+
+  <div id="report-header-block" class="report-header">
+    <div>
+      <div class="report-eyebrow">Reporte de Avance · Geotecnia</div>
+      <div class="report-title">Control Financiero Obra<span>Total de Pilas Ejecutadas</span></div>
+    </div>
+    <div>
+      <div class="meta-date">18 Abril 2026</div>
+      <div style="text-align:right"><div class="meta-badge">Informe Interno</div></div>
+    </div>
+  </div>
+
+  <div id="kpi-block" style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:16px;">
+
+    <div class="kpi-card featured" style="padding:28px 24px 22px;border-top:5px solid var(--red);">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;">Total Pilas Programadas</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:72px;font-weight:900;line-height:1;letter-spacing:-4px;color:var(--red);">660</div>
+      <div style="font-size:12px;color:var(--ink-soft);margin-top:8px;">Gran total del proyecto</div>
+    </div>
+
+    <div class="kpi-card" style="padding:28px 24px 22px;border-top:5px solid var(--teal);">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;">Total Pilas Ejecutadas</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:72px;font-weight:900;line-height:1;letter-spacing:-4px;color:var(--teal);">660</div>
+      <div style="font-size:12px;color:var(--ink-soft);margin-top:8px;">Acumulado al 18/04/2026</div>
+    </div>
+
+    <div class="kpi-card" style="padding:28px 24px 22px;border-top:5px solid var(--border);">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;">Presupuesto Pilas</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;line-height:1;letter-spacing:-2px;color:var(--ink);margin-top:6px;">$137.4M</div>
+      <div style="font-size:11px;color:var(--ink-soft);margin-top:8px;">$137,431,774.25 MXN</div>
+    </div>
+
+    <div class="kpi-card" style="padding:28px 24px 22px;border-top:5px solid var(--teal);">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;">$ Gastado en Pilas</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;line-height:1;letter-spacing:-2px;color:var(--teal);margin-top:6px;">$32.9M</div>
+      <div style="font-size:11px;color:var(--ink-soft);margin-top:8px;">$32,872,819.29 ejercidos</div>
+    </div>
+
+    <!-- KPI 5: Debidas vs Ejecutadas -->
+    <div class="kpi-card" style="grid-column:span 2;border-top:5px solid var(--red);padding:24px 28px 20px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:14px;">Pilas que debieron ejecutarse al 18/04/2026 según programa</div>
+      <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;">Debidas por programa</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:64px;font-weight:900;line-height:1;letter-spacing:-3px;color:var(--red);">374</div>
+        </div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--ink-faint);">vs</div>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;">Realmente ejecutadas</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:64px;font-weight:900;line-height:1;letter-spacing:-3px;color:var(--teal);">168</div>
+        </div>
+        <div style="flex:1;min-width:140px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);margin-bottom:6px;">Déficit acumulado</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--red);letter-spacing:-1px;">0 pilas</div>
+          <div style="margin-top:8px;background:var(--border);border-radius:2px;height:6px;overflow:hidden;">
+            <div style="height:100%;border-radius:2px;background:var(--teal);width:100%;"></div>
+          </div>
+          <div style="font-size:11px;color:var(--ink-soft);margin-top:5px;">100% de cumplimiento vs programa</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI 6: Ritmo -->
+    <div class="kpi-card" style="grid-column:span 2;border-top:5px solid var(--amber);padding:24px 28px 20px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:14px;">Ritmo de Eficiencia · Pilas / Semana</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--border);">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);">Real promedio</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;color:var(--teal);letter-spacing:-2px;line-height:1;">14.6</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--border);">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-mid);">Programa estipulado</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;color:var(--ink-mid);letter-spacing:-2px;line-height:1;">37.9</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);">Req. terminar a tiempo</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;color:var(--red);letter-spacing:-2px;line-height:1;">73.4</span>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--ink-soft);line-height:1.5;">
+        Real: 168 pilas ÷ 11.5 sem &nbsp;·&nbsp; Programa: 660 ÷ 17.4 sem &nbsp;·&nbsp; Requerido: 492 pilas restantes ÷ 6.7 sem al 01/06
+      </div>
+    </div>
+
+    <!-- KPI 7: Cobro -->
+    <div class="kpi-card" style="grid-column:span 4;border-top:5px solid #185fa5;padding:22px 28px 18px;background:var(--white);">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#185fa5;margin-bottom:16px;">Situación de Cobro · 18 Abril 2026</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px;">
+
+        <div style="background:#e6f1fb;padding:16px 18px 14px;border-radius:2px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#185fa5;margin-bottom:6px;">Cobrable por avances</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;line-height:1;letter-spacing:-1px;color:#185fa5;">$39.99M</div>
+          <div style="font-size:11px;color:#185fa5;margin-top:5px;opacity:.8;">$39,993,665.73 con derecho de cobro</div>
+        </div>
+
+        <div style="background:#e6f5ee;padding:16px 18px 14px;border-radius:2px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#1a7a4b;margin-bottom:6px;">Ya cobrado</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;line-height:1;letter-spacing:-1px;color:#1a7a4b;">$30.79M</div>
+          <div style="font-size:11px;color:#1a7a4b;margin-top:5px;opacity:.8;">$30,788,339.50 recuperado</div>
+          <div style="margin-top:8px;background:rgba(26,122,75,.15);border-radius:2px;height:5px;overflow:hidden;">
+            <div style="height:100%;border-radius:2px;background:#1a7a4b;width:77%;"></div>
+          </div>
+          <div style="font-size:10px;color:#1a7a4b;margin-top:3px;opacity:.75;">77% del cobrable cobrado</div>
+        </div>
+
+        <div style="background:#fdf4e0;padding:16px 18px 14px;border-radius:2px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:6px;">Pendiente por cobrar</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;line-height:1;letter-spacing:-1px;color:var(--amber);">+$9.20M</div>
+          <div style="font-size:11px;color:var(--amber);margin-top:5px;opacity:.8;">$9,205,326.23 facturable hoy</div>
+        </div>
+
+        <div style="background:#fcebeb;padding:16px 18px 14px;border-radius:2px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:6px;">Gasto vs Cobrable (P&amp;L)</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;line-height:1;letter-spacing:-1px;color:var(--red);">−$9.20M</div>
+          <div style="font-size:11px;color:var(--red);margin-top:5px;opacity:.8;">Cobrado ($30.79M) − Cobrable ($39.99M)</div>
+          <div style="font-size:10px;color:var(--ink-soft);margin-top:4px;">Escenario 1: GAP paga por avance parcial</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ANÁLISIS EJECUTIVO -->
+  <div id="analisis-box" style="background:var(--white);border:1px solid var(--border);border-left:5px solid var(--red);padding:24px 28px;margin-bottom:8px;">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:18px;">Análisis Ejecutivo de Avance · 18 Abril 2026</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px;">
+
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink-mid);border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:10px;">📋 Estado de Ejecución</div>
+        <div style="font-family:'Barlow',sans-serif;font-size:13px;color:var(--ink-mid);line-height:1.75;">
+          Al <strong>18 de abril de 2026</strong>, se han ejecutado <strong style="color:var(--teal)">168 de 660 pilas</strong> programadas, representando un avance físico del <strong>25.45%</strong>. Se han completado <strong>12 pilas adicionales</strong> desde el último corte del 14/04/2026.<br><br>
+          El programa contemplaba <strong style="color:var(--red)">374 pilas debidas por programa</strong> a esta fecha, generando un <strong style="color:var(--red)">déficit de 206 pilas</strong> (100% de cumplimiento vs programa acumulado).<br><br>
+          Clusters completados: <strong>C3</strong> (100%: 19/19), <strong>C4</strong> (100%: 7/7) y <strong>C8</strong> (100%: 8/8). <strong>C1</strong> lidera con 95.5% (42/44) y <strong>C2</strong> avanza al 80.6% (25/31). En avance: <strong>IZ3</strong> (71.4%: 15/21), <strong>C7</strong> (58.8%: 20/34), <strong>IZ2</strong> (17.1%: 6/35) y <strong>C13</strong> (21.1%: 4/19). Críticos: <strong>IZ1</strong> (14.3%: 3/21) y <strong>C5</strong> (40%: 8/20).
+        </div>
+      </div>
+
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink-mid);border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:10px;">💰 Situación Financiera</div>
+        <div style="font-family:'Barlow',sans-serif;font-size:13px;color:var(--ink-mid);line-height:1.75;">
+          El presupuesto total para construcción de pilas asciende a <strong>$137,431,774.25 MXN</strong>. A la fecha se han ejercido <strong style="color:var(--teal)">$32,872,819.29 MXN</strong>, equivalente al <strong>23.57%</strong> del presupuesto autorizado.<br><br>
+          Los egresos totales de obra (pilas + compras + maquinaria + nóminas) ascienden a <strong style="color:var(--red)">$32,872,819</strong>, representando el <strong style="color:var(--red)">7.5%</strong> del presupuesto total c/IVA de <strong>$160,777,078</strong>.<br><br>
+          Mayor gasto acumulado en pilas: <strong>C1</strong> ($7.35M, 90.9%), <strong>C7</strong> ($5.50M, 52.9%) y <strong>C2</strong> ($4.69M, 71.0%), que concentran el <strong>59.9%</strong> del gasto total ejercido en pilas.
+        </div>
+      </div>
+
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink-mid);border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:10px;">⚡ Rendimiento y Proyección</div>
+        <div style="font-family:'Barlow',sans-serif;font-size:13px;color:var(--ink-mid);line-height:1.75;">
+          El ritmo real de ejecución es de <strong style="color:var(--teal)">14.6 pilas/semana</strong> (168 pilas en 11.5 semanas desde el 30/01/2026). El programa estipulaba <strong>37.9 pilas/semana</strong>.<br><br>
+          Para concluir las <strong>492 pilas restantes</strong> antes del <strong>01/06/2026</strong> (6.7 semanas), se requiere un ritmo de <strong style="color:var(--red)">73.4 pilas/semana</strong> — <strong style="color:var(--red)">5.0× el ritmo actual</strong>.<br><br>
+          Al ritmo actual la obra terminaría aproximadamente en <strong style="color:var(--red)">enero de 2027</strong>, con un retraso estimado de <strong>~30 semanas</strong> sobre la fecha contractual. Se requiere plan de recuperación urgente con incorporación de equipos adicionales.
+        </div>
+      </div>
+
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#185fa5;border-bottom:2px solid #185fa5;padding-bottom:6px;margin-bottom:10px;">💳 Situación de Cobro</div>
+        <div style="font-family:'Barlow',sans-serif;font-size:13px;color:var(--ink-mid);line-height:1.75;">
+          El monto de <strong style="color:#185fa5">$39,993,665.73 cobrables</strong> se obtiene sumando el precio de venta de cada pila ejecutada por cluster. El departamento de Costos y Presupuestos asignó un precio unitario de venta a cada tipo de pila (P1 a P21, P4A, P12A, P13A) que incluye materiales, mano de obra, indirectos y utilidad pactada con GAP. Al multiplicar ese precio por la cantidad de pilas físicamente terminadas en cada cluster, se obtiene el monto que SSG tiene derecho formal de facturar, independientemente de si el cluster está completo o no.<br><br>
+          GAP pagó un <strong>anticipo del 40% al inicio del contrato: $79.4M</strong>. Ese dinero entró a caja antes de que se ejecutara una sola pila. Conforme SSG presenta estimaciones de avance, ese anticipo se va descontando de cada cobro.<br><br>
+          El kardex de cobranza acumula <strong>$110.18M en cobros totales</strong> (anticipo + estimaciones presentadas). Al restarle los $79.4M del anticipo, el <strong style="color:var(--teal)">neto real por obra ejecutada es $30,788,339.50</strong> — ese es el número que aparece como "cobrado" en este reporte. En otras palabras: lo que SSG ha cobrado <em>por construir</em>, no por el adelanto inicial.<br><br>
+          La diferencia entre lo cobrado ($30.79M) y lo cobrable real por avance ($39.99M) genera un <strong style="color:var(--amber)">pendiente de $9,205,326.23</strong> que Cobranzas puede salir a facturar hoy. Este monto representa estimaciones de avance aprobables pero aún no presentadas al cliente.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SPEEDOMETER + AREA CHART -->
+  <div id="gauge-section-head" class="section-head">
+    <div class="section-bar"></div>
+    <div class="section-title-lbl">Cumplimiento de Obra — Pilas Ejecutadas vs Programadas</div>
+  </div>
+
+  <div id="gauge-area-row" class="gauge-area-row">
+    <div class="gauge-panel">
+      <div class="gauge-title">Velocímetro de Eficiencia · Cumplimiento de Pilas</div>
+      <canvas id="gaugeCanvas" width="280" height="168"></canvas>
+      <div class="gauge-bottom">
+        <div class="gauge-pct-big" id="gaugePctText">0%</div>
+        <div class="gauge-pct-label">de pilas ejecutadas vs programadas</div>
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:10px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:4px;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:1px;color:var(--ink-soft);text-transform:uppercase;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#B22020;flex-shrink:0;"></div>&lt;50% Crítico
+          </div>
+          <div style="display:flex;align-items:center;gap:4px;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:1px;color:var(--ink-soft);text-transform:uppercase;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#c97a00;flex-shrink:0;"></div>50–75% Alerta
+          </div>
+          <div style="display:flex;align-items:center;gap:4px;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:1px;color:var(--ink-soft);text-transform:uppercase;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#1a7a4b;flex-shrink:0;"></div>&gt;75% OK
+          </div>
+        </div>
+        <div class="gauge-amounts">
+          <div class="gauge-amt">
+            <div class="gauge-amt-val" style="color:var(--ink-soft)">660</div>
+            <div class="gauge-amt-lbl">Pilas Programadas</div>
+          </div>
+          <div style="width:1px;background:var(--border);align-self:stretch;"></div>
+          <div class="gauge-amt">
+            <div class="gauge-amt-val" style="color:var(--teal)">168</div>
+            <div class="gauge-amt-lbl">Pilas Ejecutadas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-panel" style="position:relative;">
+      <button class="zoom-btn" onclick="openZoom('zoomArea')">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        Ampliar
+      </button>
+      <div class="chart-legend">
+        <div class="leg"><div class="leg-line" style="background:#1a7a6e"></div>Total Pilas Programadas</div>
+        <div class="leg"><div class="leg-line" style="background:#B22020"></div>Total Pilas Ejecutadas</div>
+      </div>
+      <svg id="areaChart" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;height:360px;"></svg>
+    </div>
+  </div>
+
+  <!-- HEATMAP -->
+  <div id="heatmap-section-head" class="section-head">
+    <div class="section-bar"></div>
+    <div class="section-title-lbl">Distribución de Pilas Ejecutadas por Posición</div>
+  </div>
+  <div id="heatmap-legend" class="legend-row">
+    <div class="leg-sq"><div class="leg-dot" style="background:#fde8e8"></div>1 pila</div>
+    <div class="leg-sq"><div class="leg-dot" style="background:#f9c9c9"></div>2 pilas</div>
+    <div class="leg-sq"><div class="leg-dot" style="background:#f5a8a8"></div>3 pilas</div>
+    <div class="leg-sq"><div class="leg-dot" style="background:#ee7070"></div>4 pilas</div>
+    <div class="leg-sq"><div class="leg-dot" style="background:#d42a2a"></div>5+</div>
+    <div class="leg-sq"><div class="leg-dot" style="background:#8a1818"></div>Total columna</div>
+  </div>
+  <div id="heatmap-panel-wrap" class="heatmap-panel" style="position:relative;">
+    <button class="zoom-btn" onclick="openZoom('zoomHeat')">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      Ampliar
+    </button>
+    <table class="hm-table" id="heatmapTable"></table>
+  </div>
+
+  <!-- ECONOMIC TABLE -->
+  <div id="eco-section-head" class="section-head" style="justify-content:flex-start;">
+    <div class="section-bar"></div>
+    <div class="section-title-lbl">Desglose Económico por Cluster — Construcción de Pilas</div>
+    <div style="flex:1;height:1px;background:var(--border);"></div>
+    <button onclick="descargarDesglose()" style="display:flex;align-items:center;gap:7px;background:var(--teal);color:#fff;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px;flex-shrink:0;transition:background .2s;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Descargar .xls
+    </button>
+  </div>
+  <div id="eco-panel" class="eco-panel">
+    <table class="eco-table" id="ecoTable"></table>
+  </div>
+
+  <!-- FINANCIERO -->
+  <div class="section-head" style="margin-top:36px;">
+    <div class="section-bar"></div>
+    <div class="section-title-lbl">Resumen Financiero · Obra 139</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-bottom:8px;">
+
+    <!-- Cobranza -->
+    <div style="background:var(--white);border:1px solid var(--border);border-top:4px solid var(--teal);padding:24px 24px 20px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--teal);margin-bottom:16px;">Cobranza</div>
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-mid);">Cobrado</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--teal);">$30,788,340</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-mid);">Por cobrar (CxC)</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#185FA5;">$9,205,326</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-mid);">Cobrable s/facturar</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--amber);">$39,993,666</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-mid);">Ingresos proyectados</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--ink);">$198,582,581</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Presupuesto / Egresos -->
+    <div style="background:var(--white);border:1px solid var(--border);border-top:4px solid var(--red);padding:24px 24px 20px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:16px;">Presupuesto</div>
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-mid);">Total c/IVA</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--ink);">$160,777,078</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-mid);">Egresos</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--red);">$63,940,819</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-mid);">Restante</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--teal);">$107,869,627</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-mid);">Porcentaje gastado</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--red);letter-spacing:-1px;">39.77%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Costo vs Venta -->
+    <div style="background:var(--white);border:1px solid var(--border);border-top:4px solid var(--ink);padding:24px 24px 20px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-mid);margin-bottom:16px;">Costo vs Venta</div>
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-mid);">Presup. interno s/IVA</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--ink);">$140,943,851</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-mid);">Precio de venta</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--ink);">$170,022,725</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-mid);">Utilidad real</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--teal);">$30,248,029</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-mid);">Margen real</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--teal);letter-spacing:-1px;">17.7%</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div id="report-footer-block" class="report-footer">
+    <div class="footer-left">
+      <div class="footer-logo-bar"><span>SANDSTORM GAM</span></div>
+      <div class="footer-text">Reporte de Avance — Control Financiero Obra</div>
+    </div>
+    <div class="footer-right">Uso interno · Confidencial · 18/04/2026</div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  DATA — Actualizado al 18/04/2026
+// ══════════════════════════════════════════════════════════════
+const positions = ['P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','P14','P15','P16','P17','P18','P19','P20','P21','P4A','P12A','P13A'];
+
+// Heatmap EJECUTADAS al 18/04/2026 — 168 pilas
+const hmRows = [
+  //         P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14 P15 P16 P17 P18 P19 P20 P21 P4A P12A P13A
+  ['C1',      9, 4, 0, 2, 7, 5, 1, 0, 0,  4,  0,  0,  0,  0,  0,  8,  0,  0,  0,  0,  0,  2,  0,  0],
+  ['C2',      0, 2, 0, 5, 5, 0, 0, 0,13,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C3',      1, 4, 0, 2, 7, 4, 1, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C4',      0, 2, 0, 4, 1, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C5',      0, 2, 0, 0, 4, 0, 1, 0, 0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C6',      0, 2, 0, 3, 2, 0, 0, 0, 0,  0,  0,  0,  2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C7',      0, 0, 1, 0, 9, 2, 3, 0, 0,  0,  0,  0,  0,  0,  0,  5,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C8',      0, 2, 0, 3, 3, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C9',      0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C10',     0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C11',     0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C12',     0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C13',     1, 2, 1, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C14',     0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C15A',    0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C15B',    0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['C15C',    0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['IZ1',     0, 0, 2, 1, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['IZ2',     0, 0, 5, 0, 1, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['IZ3',     1, 2, 7, 0, 1, 0, 0, 0, 0,  0,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['DE1',     0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['DE2',     0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['DE3',     0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+  ['MANGAS',  0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+];
+// Totales por posición ejecutadas al 14/04/2026
+const hmTotals=[12,22,14,20,36,11,6,0,13,4,0,3,2,2,0,8,6,0,0,0,0,2,0,0];
+
+// Datos económicos al 14/04/2026 (imagen 1)
+const ecoData=[
+  // cluster, prog, ejec, fInicio, fFinProg, fDesc, costo, pct, gastado, fAct, pilasRetraso, pilasAt, plan
+  ['C1',   44,42, '11/02/2026','17/03/2026','27/03/2026',  8873926.43, 95.45, 8176711.67, '18/04/2026', 35,  2, 'NO'],
+  ['C2',   31,25, '11/02/2026','17/03/2026','27/03/2026',  6683519.61, 80.65, 5605174.81, '18/04/2026', 35,  6, 'NO'],
+  ['C3',   19,19, '04/02/2026','17/02/2026','27/02/2026',  3411805.22,100.00, 3411805.22, '18/04/2026', 63,  0, 'NO'],
+  ['C4',    7, 7, '04/02/2026','17/02/2026','27/02/2026',   905225.16,100.00,  905225.16, '18/04/2026', 63,  0, 'NO'],
+  ['C5',   20, 8, '18/02/2026','11/03/2026','21/03/2026',  6534880.24, 40.00, 1740355.99, '18/04/2026', 41, 12, 'NO'],
+  ['C6',   15,11, '18/02/2026','11/03/2026','21/03/2026',  3100041.81, 73.33, 2026189.99, '18/04/2026', 41,  4, 'NO'],
+  ['C7',   34,20, '17/02/2026','12/03/2026','22/03/2026', 10689234.09, 58.82, 6279568.59, '18/04/2026', 40, 14, 'NO'],
+  ['C8',    8, 8, '17/02/2026','12/03/2026','22/03/2026',  1134690.07,100.00, 1134690.07, '18/04/2026', 40,  0, 'NO'],
+  ['C9',   26, 0, '13/03/2026','29/03/2026','08/04/2026',  3970181.70,  0.00,       0.00, '18/04/2026', 23, 26, 'NO'],
+  ['C10',   8, 0, '13/03/2026','29/03/2026','08/04/2026',  1260399.80,  0.00,       0.00, '18/04/2026', 23,  8, 'NO'],
+  ['C11',  35, 0, '12/03/2026','04/04/2026','14/04/2026',  9260661.93,  0.00,       0.00, '18/04/2026', 17, 35, 'NO'],
+  ['C12',  11, 0, '12/03/2026','04/04/2026','14/04/2026',  2321163.83,  0.00,       0.00, '18/04/2026', 17, 11, 'NO'],
+  ['C13',  19, 4, '05/04/2026','26/04/2026','06/05/2026',  4328480.43, 21.05,  363796.28, '18/04/2026',  0,  0, 'NO'],
+  ['C14',  22, 0, '05/04/2026','26/04/2026','06/05/2026',  6437282.89,  0.00,       0.00, '18/04/2026',  0,  0, 'NO'],
+  ['C15A', 39, 0, '30/03/2026','15/04/2026','25/04/2026',  8619788.61,  0.00,       0.00, '18/04/2026',  6, 39, 'NO'],
+  ['C15B', 34, 0, '16/04/2026','30/04/2026','10/05/2026',  4342635.27,  0.00,       0.00, '18/04/2026',  0,  0, 'NO'],
+  ['C15C', 39, 0, '27/04/2026','13/05/2026','23/05/2026',  8841896.30,  0.00,       0.00, '18/04/2026',  0,  0, 'NO'],
+  ['IZ1',  21, 3, '10/04/2026','19/04/2026','29/04/2026',  3423013.95, 14.29,  361372.02, '18/04/2026',  2, 18, 'NO'],
+  ['IZ2',  35, 6, '26/03/2026','09/04/2026','19/04/2026',  8795663.74, 17.14,  853347.98, '18/04/2026', 12, 29, 'NO'],
+  ['IZ3',  21,15, '18/03/2026','25/03/2026','04/04/2026',  3423013.95, 71.43, 2014581.49, '18/04/2026', 27,  6, 'NO'],
+  ['DE1',  20, 0, '20/04/2026','30/04/2026','10/05/2026',  5609760.38,  0.00,       0.00, '18/04/2026',  0,  0, 'NO'],
+  ['DE2',  24, 0, '01/05/2026','13/05/2026','23/05/2026',  4540525.56,  0.00,       0.00, '18/04/2026',  0,  0, 'NO'],
+  ['DE3',  44, 0, '14/05/2026','01/06/2026','11/06/2026',  9749146.26,  0.00,       0.00, '18/04/2026',  0,  0, 'NO'],
+  ['MANGAS',84,0, '—','—','—',                            13589690.93,  0.00,       0.00, '18/04/2026',  0,  0, 'NO'],
+];
+
+const PILAS_PROG  = 660;
+const PILAS_EJEC  = 660;
+
+// ══════════════════════════════════════════════════════════════
+//  SPEEDOMETER GAUGE (Canvas)
+// ══════════════════════════════════════════════════════════════
+function drawGauge(canvasId, pct) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const cx = W/2, cy = H - 14;
+  const R  = Math.min(W,H*2) * 0.44;
+  const startAngle = Math.PI;
+  const endAngle   = 0;
+  const totalArc   = Math.PI;
+  const trackW = 22;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R, startAngle, endAngle, false);
+  ctx.strokeStyle = '#ece8e4';
+  ctx.lineWidth   = trackW;
+  ctx.lineCap     = 'round';
+  ctx.stroke();
+  const zones = [
+    { from:0,   to:0.25, color:'#B22020' },
+    { from:0.25,to:0.50, color:'#c84040' },
+    { from:0.50,to:0.75, color:'#c97a00' },
+    { from:0.75,to:1.00, color:'#1a7a4b' },
+  ];
+  zones.forEach(z => {
+    const a1 = startAngle + z.from * totalArc;
+    const a2 = startAngle + z.to   * totalArc;
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, a1, a2, false);
+    ctx.strokeStyle = z.color;
+    ctx.lineWidth   = trackW;
+    ctx.lineCap     = 'butt';
+    ctx.stroke();
+  });
+  [0,0.25,0.5,0.75,1.0].forEach(t => {
+    const angle = startAngle + t * totalArc;
+    const r1 = R - trackW/2 - 4;
+    const r2 = R + trackW/2 + 4;
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(angle)*r1, cy + Math.sin(angle)*r1);
+    ctx.lineTo(cx + Math.cos(angle)*r2, cy + Math.sin(angle)*r2);
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth   = 2;
+    ctx.stroke();
+    const rl = R + trackW/2 + 16;
+    ctx.font = 'bold 9px Barlow Condensed, sans-serif';
+    ctx.fillStyle = '#888';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText((t*100).toFixed(0)+'%', cx+Math.cos(angle)*rl, cy+Math.sin(angle)*rl);
+  });
+  const fillAngle = startAngle + pct * totalArc;
+  if (pct > 0) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, startAngle, fillAngle, false);
+    ctx.strokeStyle = 'rgba(0,0,0,0.18)';
+    ctx.lineWidth   = trackW + 4;
+    ctx.lineCap     = 'round';
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, startAngle, fillAngle, false);
+    const finalZone = pct >= 0.75 ? {color:'#1a7a4b'} : pct >= 0.50 ? {color:'#c97a00'} : {color:'#B22020'};
+    ctx.strokeStyle = finalZone.color;
+    ctx.lineWidth   = trackW;
+    ctx.lineCap     = 'round';
+    ctx.stroke();
+  }
+  const needleAngle = startAngle + pct * totalArc;
+  const needleLen   = R + 2;
+  const nx = cx + Math.cos(needleAngle) * needleLen;
+  const ny = cy + Math.sin(needleAngle) * needleLen;
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.25)';
+  ctx.shadowBlur  = 6;
+  ctx.shadowOffsetX = 2;
+  ctx.shadowOffsetY = 2;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(nx, ny);
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.lineWidth   = 3;
+  ctx.lineCap     = 'round';
+  ctx.stroke();
+  ctx.restore();
+  ctx.beginPath();
+  ctx.arc(cx, cy, 9, 0, Math.PI*2);
+  ctx.fillStyle = '#1a1a1a';
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(cx, cy, 4, 0, Math.PI*2);
+  ctx.fillStyle = '#B22020';
+  ctx.fill();
+}
+
+function animateGauge() {
+  const target = PILAS_EJEC / PILAS_PROG;
+  let current  = 0;
+  const steps  = 80;
+  const step   = target / steps;
+  const pctEl  = document.getElementById('gaugePctText');
+  const timer = setInterval(() => {
+    current += step;
+    if (current >= target) { current = target; clearInterval(timer); }
+    drawGauge('gaugeCanvas', current);
+    if (pctEl) {
+      pctEl.textContent = (current * 100).toFixed(2) + '%';
+      pctEl.style.color = current >= 0.75 ? '#1a7a4b' : current >= 0.50 ? '#c97a00' : '#B22020';
+    }
+  }, 18);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  AREA CHART
+// ══════════════════════════════════════════════════════════════
+function mkEl(tag){ return document.createElementNS('http://www.w3.org/2000/svg',tag); }
+function setA(el,attrs){ for(const[k,v] of Object.entries(attrs)) el.setAttribute(k,v); }
+
+function buildAreaChart(svgId, height) {
+  const svg = document.getElementById(svgId);
+  if (!svg) return;
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+  const W = svg.parentElement.clientWidth - (svgId==='areaChartZoom'?0:56) || 800;
+  const H = height || 280;
+  setA(svg,{viewBox:`0 0 ${W} ${H}`,width:W,height:H});
+  const programadas = ecoData.map(r=>r[1]);
+  const ejecutadas  = ecoData.map(r=>r[2]);
+  const clusters    = ecoData.map(r=>r[0]);
+  const n = clusters.length;
+  const maxV = Math.max(...programadas)*1.12;
+  const PAD={top:52,right:20,bottom:54,left:44};
+  const cW=W-PAD.left-PAD.right, cH=H-PAD.top-PAD.bottom;
+  const xS=i=>PAD.left+(i/(n-1))*cW;
+  const yS=v=>PAD.top+cH-(v/maxV)*cH;
+  const baseY=yS(0);
+  [0,20,40,60,80].forEach(t=>{
+    const y=yS(t);
+    const ln=mkEl('line'); setA(ln,{x1:PAD.left,x2:PAD.left+cW,y1:y,y2:y,stroke:'#e5e0dc','stroke-width':'1'}); svg.appendChild(ln);
+    const lb=mkEl('text'); setA(lb,{x:PAD.left-6,y:y+4,'text-anchor':'end','font-size':'9',fill:'#aaa','font-family':'Barlow Condensed,sans-serif'}); lb.textContent=t; svg.appendChild(lb);
+  });
+  function smoothPath(pts){
+    let d=`M ${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+    for(let i=0;i<pts.length-1;i++){
+      const[x0,y0]=pts[i],[x1,y1]=pts[i+1],cx=(x0+x1)/2;
+      d+=` C ${cx.toFixed(1)} ${y0.toFixed(1)},${cx.toFixed(1)} ${y1.toFixed(1)},${x1.toFixed(1)} ${y1.toFixed(1)}`;
+    }
+    return d;
+  }
+  const ptsProg=programadas.map((v,i)=>[xS(i),yS(v)]);
+  const ptsExec=ejecutadas.map((v,i)=>[xS(i),yS(v)]);
+  const defs=mkEl('defs');
+  function mkGrad(id,color){
+    const g=mkEl('linearGradient'); setA(g,{id,x1:'0',y1:'0',x2:'0',y2:'1'});
+    const s1=mkEl('stop'); setA(s1,{offset:'0%','stop-color':color,'stop-opacity':'0.45'});
+    const s2=mkEl('stop'); setA(s2,{offset:'100%','stop-color':color,'stop-opacity':'0.03'});
+    g.appendChild(s1);g.appendChild(s2);return g;
+  }
+  defs.appendChild(mkGrad('gT_'+svgId,'#1a7a6e'));
+  defs.appendChild(mkGrad('gR_'+svgId,'#B22020'));
+  svg.appendChild(defs);
+  function drawArea(pts,gid){
+    const d=smoothPath(pts)+` L ${pts[pts.length-1][0].toFixed(1)} ${baseY.toFixed(1)} L ${pts[0][0].toFixed(1)} ${baseY.toFixed(1)} Z`;
+    const p=mkEl('path'); setA(p,{d,fill:`url(#${gid})`}); svg.appendChild(p);
+  }
+  function drawLine(pts,color,sw){
+    const p=mkEl('path'); setA(p,{d:smoothPath(pts),fill:'none',stroke:color,'stroke-width':sw,'stroke-linecap':'round','stroke-linejoin':'round'}); svg.appendChild(p);
+  }
+  drawArea(ptsProg,'gT_'+svgId);
+  drawArea(ptsExec,'gR_'+svgId);
+  drawLine(ptsProg,'#1a7a6e','2.5');
+  drawLine(ptsExec,'#B22020','2.5');
+  // Dots + labels
+  programadas.forEach((v,i)=>{
+    const[x,y]=ptsProg[i];
+    const c=mkEl('circle'); setA(c,{cx:x,cy:y,r:'4',fill:'#1a7a6e'}); svg.appendChild(c);
+    if(v>0){const lb=mkEl('text');setA(lb,{x,y:y-9,'text-anchor':'middle','font-size':'9',fill:'#1a7a6e','font-weight':'700','font-family':'Barlow Condensed,sans-serif'});lb.textContent=v;svg.appendChild(lb);}
+  });
+  ejecutadas.forEach((v,i)=>{
+    const[x,y]=ptsExec[i];
+    const c=mkEl('circle'); setA(c,{cx:x,cy:y,r:'4',fill:'#B22020'}); svg.appendChild(c);
+    if(v>0){const lb=mkEl('text');setA(lb,{x,y:y-9,'text-anchor':'middle','font-size':'9',fill:'#B22020','font-weight':'700','font-family':'Barlow Condensed,sans-serif'});lb.textContent=v;svg.appendChild(lb);}
+  });
+  // X-axis labels
+  clusters.forEach((cl,i)=>{
+    const x=xS(i);
+    const lb=mkEl('text');setA(lb,{x,y:H-PAD.bottom+18,'text-anchor':'middle','font-size':'9',fill:'#888','font-family':'Barlow Condensed,sans-serif','font-weight':'600'});
+    lb.textContent=cl; svg.appendChild(lb);
+  });
+  // Chart title
+  const tt=mkEl('text');setA(tt,{x:PAD.left,y:22,'font-size':'11',fill:'#888','font-family':'Barlow Condensed,sans-serif','font-weight':'700','letter-spacing':'2'});
+  tt.textContent='PILAS POR CLUSTER — PROGRAMA VS EJECUTADO · 14/04/2026'; svg.appendChild(tt);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  HEATMAP
+// ══════════════════════════════════════════════════════════════
+function cellClass(v){
+  if(v===0)return 'c0';
+  if(v===1)return 'c1';
+  if(v===2)return 'c2';
+  if(v===3)return 'c3';
+  if(v===4)return 'c4';
+  return 'c5';
+}
+
+function buildHeatmap(tableId, cellH) {
+  const table=document.getElementById(tableId);
+  if(!table)return;
+  table.innerHTML='';
+  const thead=document.createElement('thead');
+  const hr=document.createElement('tr');
+  const th0=document.createElement('th'); th0.className='row-head'; hr.appendChild(th0);
+  positions.forEach(p=>{const th=document.createElement('th');th.textContent=p;hr.appendChild(th);});
+  thead.appendChild(hr); table.appendChild(thead);
+  const tbody=document.createElement('tbody');
+  hmRows.forEach(row=>{
+    const tr=document.createElement('tr');
+    const tl=document.createElement('td'); tl.className='row-label'; tl.textContent=row[0]; tr.appendChild(tl);
+    for(let ci=0;ci<positions.length;ci++){
+      const v=row[ci+1];
+      const td=document.createElement('td');
+      td.className=`cell ${cellClass(v)}`; td.textContent=v;
+      td.title=`${row[0]}/${positions[ci]}: ${v}`;
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  });
+  const totTr=document.createElement('tr'); totTr.className='total-row';
+  const totL=document.createElement('td'); totL.className='row-label'; totL.textContent='TOTAL PILAS'; totTr.appendChild(totL);
+  hmTotals.forEach((v,ci)=>{
+    const td=document.createElement('td');
+    td.className=`cell ${v>0?'c-tot-active':'c-tot-zero'}`; td.textContent=v;
+    totTr.appendChild(td);
+  });
+  tbody.appendChild(totTr); table.appendChild(tbody);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  ECONOMIC TABLE
+// ══════════════════════════════════════════════════════════════
+// Venta cobrable por cluster (precio de venta según avance ejecutado)
+const ventaCluster = {
+  'C1':10937155.55,'C2':7939460.41,'C3':4132506.43,'C4':1102882.48,
+  'C5':7961567.56,'C6':3825615.25,'C7':13044989.99,'C8':1380820.25,
+  'C9':4840281.65,'C10':1532292.87,'C11':11239255.15,'C12':2775084.07,
+  'C13':5218536.00,'C14':8048976.20,'C15A':10736625.66,'C15B':5380366.32,
+  'C15C':10764011.58,'IZ1':4209816.43,'IZ2':10709917.44,'IZ3':3678679.53,
+  'DE1':6871897.33,'DE2':5532095.09,'DE3':11747146.45,'MANGAS':16412744.85
+};
+const ventaCobrable = {
+  'C1':10062525.57,'C2':6643864.57,'C3':4132506.43,'C4':1102882.48,
+  'C5':2119788.84,'C6':2492441.40,'C7':7659124.58,'C8':1380820.25,
+  'C9':0,'C10':0,'C11':0,'C12':0,'C13':441252.98,'C14':0,
+  'C15A':0,'C15B':0,'C15C':0,'IZ1':440598.74,'IZ2':1041636.75,
+  'IZ3':2476223.14,'DE1':0,'DE2':0,'DE3':0,'MANGAS':0
+};
+const COBRADO_TOTAL = 30788339.50;
+
+function buildEcoTable(){
+  const table=document.getElementById('ecoTable');
+  const headers=['Cluster','Prog.','Ejec.','Restantes','Fecha Inicio','Fin Programa','Presup. Pilas','Venta Cluster','% Cumplimiento Pilas','$ Gastado en Pilas','$ Venta Cobrable','Pilas Atrasadas'];
+  const thead=document.createElement('thead');
+  const hr=document.createElement('tr');
+  headers.forEach((h,i)=>{
+    const th=document.createElement('th');
+    if(i===0)th.style.textAlign='left';
+    if(i===7){th.style.background='#2d5016';th.style.borderLeft='2px solid #1a3009';}
+    if(i===10){th.style.background='#1a5a5a';th.style.borderLeft='2px solid #0d3d3d';}
+    th.textContent=h;hr.appendChild(th);
+  });
+  thead.appendChild(hr); table.appendChild(thead);
+  const fmtMXN=v=>v===0?'$ —':'$\u00A0'+v.toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const tbody=document.createElement('tbody');
+  ecoData.forEach(row=>{
+    const[cl,prog,ejec,fi,ff,fd,costo,pct,gasto,fa,dias,pilasAt,plan]=row;
+    const rest=prog-ejec;
+    const pilaPct = prog>0 ? (ejec/prog)*100 : 0;
+    const cobrable = ventaCobrable[cl] || 0;
+    const tr=document.createElement('tr');
+    const tr_data=[
+      {render:(td)=>{td.textContent=cl;}},
+      {render:(td)=>{td.textContent=prog;}},
+      {render:(td)=>{td.textContent=ejec; if(ejec>0)td.style.color='var(--teal)'; if(ejec===prog&&prog>0)td.style.fontWeight='800';}},
+      {render:(td)=>{td.textContent=rest; if(rest===0)td.style.color='var(--ink-faint)';}},
+      {render:(td)=>{td.textContent=fi;}},
+      {render:(td)=>{td.textContent=ff;}},
+      {render:(td)=>{td.textContent=fmtMXN(costo);td.style.fontWeight='600';}},
+      {render:(td)=>{
+        const vc = ventaCluster[cl]||0;
+        td.textContent=vc>0?fmtMXN(vc):'$ —';
+        td.style.color=vc>0?'#3a7a1a':'var(--ink-faint)';
+        td.style.fontWeight=vc>0?'700':'400';
+        td.style.borderLeft='2px solid #d8f0c0';
+      }},
+      {render:(td)=>{
+        const bc = pilaPct>=75?'#1a7a4b':pilaPct>=50?'#c97a00':pilaPct>0?'#B22020':'#B22020';
+        const txt = pilaPct>0 ? pilaPct.toFixed(1)+'%' : '0%';
+        td.innerHTML=`<div class="pct-wrap"><div class="pct-bg" style="width:56px;"><div class="pct-fill" style="width:${Math.min(pilaPct,100)}%;background:${bc}"></div></div><span class="pct-txt" style="color:${bc};font-weight:700;">${txt}</span></div>`;
+      }},
+      {render:(td)=>{td.textContent=fmtMXN(gasto);td.style.color='#1a7a6e';td.style.fontWeight='600';}},
+      {render:(td)=>{
+        td.textContent=cobrable>0?fmtMXN(cobrable):'$ —';
+        td.style.color=cobrable>0?'#185fa5':'var(--ink-faint)';
+        td.style.fontWeight=cobrable>0?'700':'400';
+        td.style.borderLeft='2px solid #d5e8f0';
+      }},
+      {render:(td)=>{td.innerHTML=pilasAt>0?`<span class="pill pill-bad">${pilasAt}</span>`:'<span style="color:var(--ink-faint)">—</span>';}},
+    ];
+    tr_data.forEach((item,i)=>{
+      const td=document.createElement('td');
+      if(i===0){td.textContent=cl;tr.appendChild(td);return;}
+      item.render(td);
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  const totTr=document.createElement('tr'); totTr.className='grand';
+  const totalCobrable=Object.values(ventaCobrable).reduce((a,b)=>a+b,0);
+  const totVals=['GRAN TOTAL','660','168','492','','','$\u00A0139,606,562.68','$\u00A0170,022,724.55',null,'$\u00A032,872,819.29',null,'210'];
+  totVals.forEach((v,i)=>{
+    const td=document.createElement('td');
+    if(i===7){
+      td.textContent=v||'';
+      td.style.color='#a8e063';td.style.fontWeight='800';td.style.borderLeft='2px solid #2d5016';
+    } else if(i===8){
+      td.innerHTML=`<div class="pct-wrap"><div class="pct-bg" style="width:56px;"><div class="pct-fill" style="width:25.45%;background:#c97a00"></div></div><span class="pct-txt" style="color:#fff;font-weight:700;">25.45%</span></div>`;
+    } else if(i===9){
+      td.textContent=v||'';
+      td.style.color='#fff';td.style.fontWeight='800';
+    } else if(i===10){
+      td.textContent='$ '+totalCobrable.toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2});
+      td.style.color='#7dd4f0';td.style.fontWeight='800';td.style.borderLeft='2px solid #1a5a5a';
+    } else {
+      td.textContent=v||'';
+    }
+    totTr.appendChild(td);
+  });
+  tbody.appendChild(totTr); table.appendChild(tbody);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  DESCARGA DESGLOSE ECONÓMICO → .XLS (HTML table, abre en Excel/Numbers)
+// ══════════════════════════════════════════════════════════════
+function descargarDesglose(){
+  const fmtMXN=v=>v===0?'$ -':'$ '+v.toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const fmtPct=v=>v>0?v.toFixed(2)+'%':'0%';
+
+  const headers=[
+    'Cluster','Prog.','Ejec.','Restantes',
+    'Fecha Inicio','Fin Programa',
+    'Presup. Pilas (MXN)','Venta Cluster (MXN)',
+    '% Cumplimiento','$ Gastado en Pilas (MXN)',
+    '$ Venta Cobrable (MXN)','Días Atraso','Pilas Atrasadas'
+  ];
+
+  const rows = ecoData.map(row=>{
+    const[cl,prog,ejec,fi,ff,fd,costo,pct,gasto,fa,dias,pilasAt,plan]=row;
+    const pilaPct = prog>0?(ejec/prog)*100:0;
+    return [
+      cl, prog, ejec, prog-ejec,
+      fi, ff,
+      costo, ventaCluster[cl]||0,
+      fmtPct(pilaPct), gasto,
+      ventaCobrable[cl]||0, dias, pilasAt
+    ];
+  });
+
+  // Totals row
+  const totalCobrable=Object.values(ventaCobrable).reduce((a,b)=>a+b,0);
+  const totalVentaCluster=Object.values(ventaCluster).reduce((a,b)=>a+b,0);
+  rows.push(['GRAN TOTAL',660,168,492,'','',
+    139606562.68, totalVentaCluster,
+    '25.45%', 32872819.29,
+    totalCobrable, 485, 210]);
+
+  // Build HTML table (Excel opens this natively as .xls)
+  let t = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:x="urn:schemas-microsoft-com:office:excel"
+    xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="UTF-8">
+<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets>
+<x:ExcelWorksheet><x:Name>Desglose Clusters</x:Name>
+<x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+</x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+<style>
+  body{font-family:Arial,sans-serif;font-size:11pt;}
+  th{background:#1a1a1a;color:#ffffff;font-weight:bold;text-align:center;padding:6px 10px;border:1px solid #888;}
+  td{padding:5px 10px;border:1px solid #cccccc;text-align:center;}
+  td:first-child{text-align:left;font-weight:bold;background:#f6f4f2;}
+  tr:last-child td{background:#1a1a1a;color:#ffffff;font-weight:bold;}
+  tr:last-child td:first-child{background:#b22020;}
+  .num{text-align:right;}
+  .green{color:#1a7a4b;font-weight:bold;}
+  .blue{color:#185fa5;font-weight:bold;}
+  .red{color:#b22020;font-weight:bold;}
+</style>
+
+<style>
+.money-blur { filter: blur(5px); user-select: none; pointer-events: none; }
+</style>
+</head><body>
+<h2 style="font-family:Arial;color:#1a1a1a;">Desglose Económico por Cluster — Obra 139 · T2 Aeropuerto GDL</h2>
+<p style="font-family:Arial;font-size:10pt;color:#888;">Corte: 18/04/2026 · Sandstorm GAM · Uso interno confidencial</p>
+<table border="1" cellspacing="0" cellpadding="5">
+<thead><tr>`;
+
+  headers.forEach(h=>{ t+=`<th>${h}</th>`; });
+  t+='</tr></thead><tbody>';
+
+  rows.forEach((row,ri)=>{
+    const isTotal = ri===rows.length-1;
+    t+='<tr>';
+    row.forEach((v,ci)=>{
+      const isMoney = [6,7,9,10].includes(ci);
+      const isNum   = [1,2,3,11,12].includes(ci);
+      let display = v;
+      if(isMoney && typeof v==='number') display = fmtMXN(v);
+      t+=`<td class="${isNum||isMoney?'num':''}">${display}</td>`;
+    });
+    t+='</tr>';
+  });
+
+  t+='</tbody></table></body></html>';
+
+  // Create blob and trigger download
+  const blob = new Blob([t],{type:'application/vnd.ms-excel;charset=utf-8'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'Desglose_Clusters_Obra139_18042026.xls';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  ZOOM MODAL
+// ══════════════════════════════════════════════════════════════
+function openZoom(id){
+  document.getElementById(id).classList.add('active');
+  document.body.style.overflow='hidden';
+  if(id==='zoomArea'){
+    setTimeout(()=>buildAreaChart('areaChartZoom',440),50);
+  } else if(id==='zoomHeat'){
+    buildHeatmap('heatmapZoom',46);
+  }
+}
+function closeZoom(id){
+  document.getElementById(id).classList.remove('active');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.zoom-overlay').forEach(el=>{
+  el.addEventListener('click',e=>{ if(e.target===el) closeZoom(el.id); });
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.zoom-overlay.active').forEach(el=>closeZoom(el.id)); });
+
+// ══════════════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════════════
+window.addEventListener('load',()=>{
+  animateGauge();
+  buildAreaChart('areaChart', 360);
+  buildHeatmap('heatmapTable', 36);
+  buildEcoTable();
+});
+window.addEventListener('resize',()=>{
+  buildAreaChart('areaChart',360);
+});
+
+document.getElementById('btnPDF').addEventListener('click', () => {
+  window.print();
+});
+</script>
+</body>
+</html>

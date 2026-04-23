@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sebastian Gutierrez Naranjo — Financial Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & TOKENS ────────────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --wine:       #6B1230;
+  --wine-mid:   #8B1A3A;
+  --wine-light: #B52050;
+  --wine-dim:   #3D0A1B;
+  --bg:         #0A0608;
+  --bg-2:       #100810;
+  --bg-card:    #14090E;
+  --border:     rgba(107,18,48,0.25);
+  --border-dim: rgba(255,255,255,0.06);
+  --text-1:     #F5EEF0;
+  --text-2:     #C8AEB7;
+  --text-3:     #7A6570;
+  --accent:     #C8243A;
+  --serif:      'Cormorant Garamond', Georgia, serif;
+  --sans:       'DM Sans', system-ui, sans-serif;
+  --mono:       'DM Mono', monospace;
+  --ease:       cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.7;
+  cursor: default;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--wine); color: white; }
+
+/* ── GRAIN OVERLAY ─────────────────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ── NAV ───────────────────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 24px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(10,6,8,0.95) 0%, transparent 100%);
+}
+
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: 0.02em;
+}
+.nav-logo span { color: var(--wine-light); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-3);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text-1); }
+
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.lang-btn {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: none;
+  background: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+  font-family: var(--sans);
+}
+.lang-btn.active { background: var(--wine); color: white; }
+
+/* ── HERO ──────────────────────────────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 60px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg-line {
+  position: absolute;
+  top: 0; right: 35%;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--wine) 30%, var(--wine-dim) 70%, transparent);
+  opacity: 0.4;
+}
+
+.hero-bg-circle {
+  position: absolute;
+  bottom: -200px;
+  right: -100px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(107,18,48,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-tag {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--wine-light);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease) 0.2s forwards;
+}
+
+.hero-name {
+  font-family: var(--serif);
+  font-size: clamp(56px, 8vw, 110px);
+  font-weight: 300;
+  line-height: 0.95;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeUp 0.9s var(--ease) 0.35s forwards;
+}
+.hero-name em { font-style: italic; color: var(--wine-light); }
+
+.hero-desc {
+  max-width: 520px;
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--text-2);
+  line-height: 1.8;
+  margin-bottom: 56px;
+  opacity: 0;
+  animation: fadeUp 0.9s var(--ease) 0.5s forwards;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.9s var(--ease) 0.65s forwards;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--wine);
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border-radius: 3px;
+  transition: background 0.2s, transform 0.2s;
+  font-family: var(--sans);
+}
+.btn-primary:hover { background: var(--wine-mid); transform: translateY(-1px); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: transparent;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border: 1px solid var(--border-dim);
+  border-radius: 3px;
+  transition: all 0.2s;
+  font-family: var(--sans);
+}
+.btn-secondary:hover { border-color: var(--wine); color: var(--text-1); }
+
+.hero-metrics {
+  position: absolute;
+  right: 60px;
+  bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  opacity: 0;
+  animation: fadeIn 1s var(--ease) 0.9s forwards;
+}
+
+.metric { text-align: right; }
+.metric-num {
+  font-family: var(--serif);
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--text-1);
+  line-height: 1;
+}
+.metric-num span { color: var(--wine-light); }
+.metric-label {
+  font-size: 11px;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ── DIVIDER ───────────────────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border) 20%, var(--border) 80%, transparent);
+  margin: 0 60px;
+}
+
+/* ── SECTION ───────────────────────────────────────────────────────────── */
+section { padding: 100px 60px; }
+
+.sec-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--wine-light);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.sec-title {
+  font-family: var(--serif);
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 60px;
+}
+.sec-title em { font-style: italic; color: var(--wine-light); }
+
+/* ── ABOUT ─────────────────────────────────────────────────────────────── */
+#about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.about-text {
+  font-size: 17px;
+  color: var(--text-2);
+  line-height: 1.9;
+  margin-bottom: 24px;
+}
+.about-text strong { color: var(--text-1); font-weight: 500; }
+
+.about-right { padding-top: 100px; }
+
+/* ── PHOTO ─────────────────────────────────────────────────────────────── */
+.photo-frame {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.photo-frame img {
+  width: 100%;
+  max-width: 320px;
+  height: 380px;
+  object-fit: cover;
+  object-position: center center;
+  border-radius: 4px;
+  display: block;
+  filter: grayscale(15%) contrast(1.05);
+}
+
+/* photo-frame::before removed */
+
+.photo-caption {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 12px;
+}
+
+/* ── FACTS ─────────────────────────────────────────────────────────────── */
+.about-facts { display: flex; flex-direction: column; gap: 0; }
+
+.fact {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border-dim);
+}
+.fact:first-child { border-top: 1px solid var(--border-dim); }
+
+.fact-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: rgba(107,18,48,0.15);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fact-icon svg { width: 18px; height: 18px; stroke: var(--wine-light); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+.fact-label { font-size: 11px; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+.fact-value { font-size: 16px; color: var(--text-1); font-weight: 400; }
+
+/* ── EXPERIENCE ─────────────────────────────────────────────────────────── */
+.exp-grid { display: flex; flex-direction: column; gap: 0; }
+
+.exp-item {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  padding: 48px 0;
+  border-bottom: 1px solid var(--border-dim);
+}
+.exp-item:first-child { border-top: 1px solid var(--border-dim); }
+
+.exp-period { font-family: var(--mono); font-size: 12px; color: var(--wine-light); letter-spacing: 0.08em; margin-bottom: 8px; }
+.exp-org { font-size: 14px; color: var(--text-3); font-weight: 400; }
+.exp-role { font-size: 19px; color: var(--text-1); font-weight: 400; margin-bottom: 16px; font-family: var(--serif); font-style: italic; }
+.exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.exp-bullets li {
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.75;
+  padding-left: 20px;
+  position: relative;
+}
+.exp-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 6px;
+  height: 1px;
+  background: var(--wine-light);
+}
+
+/* ── PROJECTS ─────────────────────────────────────────────────────────── */
+.projects-grid { display: flex; flex-direction: column; gap: 40px; }
+
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+.project-card:hover { border-color: var(--border); }
+
+.project-card-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.project-card-text { padding: 40px; }
+.project-card-media { 
+  position: relative;
+  overflow: hidden;
+  background: #0d080b;
+  min-height: 280px;
+}
+.project-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.85;
+  transition: opacity 0.3s, transform 0.4s;
+}
+.project-card:hover .project-card-media img { opacity: 1; transform: scale(1.02); }
+
+/* Single-column project (no image) */
+.project-card-simple { padding: 40px; }
+
+.project-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--wine-light);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.project-title {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--text-1);
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.project-desc {
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.project-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill {
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--text-3);
+  border: 1px solid var(--border-dim);
+  border-radius: 2px;
+  padding: 4px 10px;
+  letter-spacing: 0.05em;
+}
+
+/* ── PROJECT SCREENSHOTS GALLERY ───────────────────────────────────────── */
+.screenshots-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  padding: 0;
+  background: #0d080b;
+}
+
+.screenshots-row img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+  cursor: zoom-in;
+}
+.screenshots-row img:hover { opacity: 1; }
+
+/* ── PPTX SLIDES STRIP ──────────────────────────────────────────────────── */
+.slides-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(107,18,48,0.08);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  margin-top: 20px;
+}
+.slides-note svg { width: 16px; height: 16px; stroke: var(--wine-light); fill: none; flex-shrink: 0; }
+.slides-note-text { font-size: 13px; color: var(--text-3); font-family: var(--mono); letter-spacing: 0.05em; }
+
+/* ── LIGHTBOX ────────────────────────────────────────────────────────── */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(5,3,4,0.92);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+.lightbox.active { display: flex; }
+.lightbox img {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 2px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+}
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: var(--text-2);
+  font-size: 32px;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.lightbox-close:hover { color: var(--text-1); }
+
+/* ── SANDSTORM DASHBOARD EMBED ──────────────────────────────────────────── */
+.dashboard-embed-wrap {
+  margin-top: 32px;
+  border: 1px solid var(--border-dim);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.dashboard-embed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: rgba(107,18,48,0.08);
+  border-bottom: 1px solid var(--border-dim);
+}
+
+.dashboard-embed-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--wine-light);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.dashboard-embed-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-dim);
+  border-radius: 2px;
+  padding: 3px 8px;
+}
+
+.dashboard-iframe-wrap {
+  height: auto;
+  position: relative;
+  max-height: 750px;
+  overflow-y: auto;
+}
+
+.dashboard-iframe-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* ── EDUCATION ─────────────────────────────────────────────────────────── */
+.edu-grid { display: flex; flex-direction: column; gap: 0; }
+
+.edu-item {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--border-dim);
+}
+.edu-item:first-child { border-top: 1px solid var(--border-dim); }
+
+.edu-period { font-family: var(--mono); font-size: 12px; color: var(--wine-light); letter-spacing: 0.08em; margin-bottom: 6px; }
+.edu-institution { font-size: 14px; color: var(--text-3); }
+.edu-degree { font-size: 18px; color: var(--text-1); font-weight: 400; margin-bottom: 8px; font-family: var(--serif); }
+.edu-note { font-size: 15px; color: var(--text-3); line-height: 1.6; }
+
+/* ── SKILLS ─────────────────────────────────────────────────────────────── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+.skill-group-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--wine-light);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.skill-list { display: flex; flex-direction: column; gap: 8px; }
+.skill-item { font-size: 15px; color: var(--text-2); font-weight: 300; }
+.lang-name { font-size: 16px; color: var(--text-1); margin-bottom: 2px; }
+.lang-level { font-size: 14px; color: var(--text-2); }
+.lang-cert { font-size: 12px; color: var(--text-3); margin-top: 2px; font-family: var(--mono); }
+
+/* ── CONTACT ─────────────────────────────────────────────────────────────── */
+.contact-title {
+  font-family: var(--serif);
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 32px;
+}
+.contact-title em { font-style: italic; color: var(--wine-light); }
+
+.contact-sub {
+  font-size: 17px;
+  color: var(--text-2);
+  line-height: 1.8;
+  max-width: 560px;
+  margin-bottom: 48px;
+}
+
+.contact-email {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(20px, 2.5vw, 32px);
+  color: var(--text-1);
+  text-decoration: none;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--border-dim);
+  padding-bottom: 24px;
+  transition: color 0.2s;
+}
+.contact-email:hover { color: var(--wine-light); }
+
+.contact-links { display: flex; gap: 16px; flex-wrap: wrap; }
+
+/* ── FOOTER ─────────────────────────────────────────────────────────────── */
+footer {
+  padding: 40px 60px;
+  border-top: 1px solid var(--border-dim);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-name { font-family: var(--serif); font-size: 16px; color: var(--text-3); }
+.footer-copy { font-size: 13px; color: var(--text-3); font-family: var(--mono); }
+
+/* ── ANIMATIONS ──────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Hide sticky nav inside embed */
+.sdash-wrap .navbar { position: relative !important; top: auto !important; }
+/* ── SANDSTORM DASHBOARD SCOPED ─────────────────────────────────────────── */
+.sdash-wrap {
+  background: #f6f4f2;
+  color: #1a1a1a;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+}
+
+:root {
+  --red:      #B22020;
+  --red-dark: #8a1818;
+  --teal:     #1a7a6e;
+  --ink:      #1a1a1a;
+  --ink-mid:  #444;
+  --ink-soft: #888;
+  --ink-faint:#ccc;
+  --white:    #fff;
+  --off:      #f6f4f2;
+  --border:   #e5e0dc;
+  --amber:    #c97a00;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+.sdash-wrap{background:var(--off);color:var(--ink);font-family:'Barlow',sans-serif;font-size:14px;}
+.navbar{background:var(--white);border-bottom:3px solid var(--red);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:72px;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.08);}
+.logo-grupo{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:400;letter-spacing:5px;color:var(--ink-mid);text-transform:uppercase;margin-bottom:1px;}
+.logo-sandstorm{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:var(--red);letter-spacing:1px;line-height:1;text-transform:uppercase;}
+.logo-gam-bar{background:var(--red);padding:1px 6px 2px;display:inline-block;margin-top:2px;}
+.logo-gam-bar span{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#fff;letter-spacing:3px;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-project{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;color:var(--ink-soft);text-transform:uppercase;border-right:1px solid var(--border);padding-right:16px;}
+.btn-dl{display:flex;align-items:center;gap:8px;background:var(--red);color:#fff;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;transition:background .2s,transform .15s;}
+.btn-dl:hover{background:var(--red-dark);transform:translateY(-1px);}
+.btn-dl svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+#report-content{padding:48px 56px 72px;max-width:1500px;margin:0 auto;}
+.report-header{display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;margin-bottom:48px;padding-bottom:28px;border-bottom:1px solid var(--border);position:relative;}
+.report-header::before{content:'';position:absolute;bottom:-1px;left:0;width:140px;height:3px;background:var(--red);}
+.report-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:4px;color:var(--red);text-transform:uppercase;margin-bottom:10px;}
+.report-title{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;line-height:.95;letter-spacing:-.5px;text-transform:uppercase;}
+.report-title span{display:block;color:var(--red);}
+.meta-date{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--ink-soft);text-transform:uppercase;margin-bottom:6px;text-align:right;}
+.meta-badge{display:inline-block;background:var(--ink);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 12px;text-transform:uppercase;}
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-bottom:40px;}
+.kpi-card{background:var(--white);border-top:4px solid var(--border);padding:22px 18px 18px;transition:border-color .2s;}
+.kpi-card:hover,.kpi-card.featured{border-top-color:var(--red);}
+.kpi-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px;}
+.kpi-value{font-family:'Barlow Condensed',sans-serif;font-size:46px;font-weight:900;line-height:1;letter-spacing:-2px;color:var(--ink);}
+.kpi-value.red{color:var(--red);}.kpi-value.teal{color:var(--teal);}.kpi-value.amber{color:var(--amber);}
+.kpi-value.money{font-size:28px;letter-spacing:-1px;margin-top:4px;}
+.kpi-sub{font-size:11px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+.section-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;margin-top:36px;}
+.section-bar{width:4px;height:20px;background:var(--red);flex-shrink:0;}
+.section-title-lbl{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink-mid);}
+.section-head::after{content:'';flex:1;height:1px;background:var(--border);}
+.gauge-area-row{display:grid;grid-template-columns:340px 1fr;gap:3px;margin-bottom:8px;}
+.gauge-panel{background:var(--white);border:1px solid var(--border);padding:32px 24px 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.gauge-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:20px;text-align:center;}
+#gaugeCanvas{display:block;}
+.gauge-bottom{text-align:center;margin-top:16px;}
+.gauge-pct-big{font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:900;line-height:1;color:var(--red);letter-spacing:-2px;}
+.gauge-pct-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);margin-top:4px;}
+.gauge-amounts{display:flex;gap:20px;justify-content:center;margin-top:14px;}
+.gauge-amt{text-align:center;}
+.gauge-amt-val{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--ink);}
+.gauge-amt-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);margin-top:2px;}
+.chart-panel{background:var(--white);border:1px solid var(--border);padding:28px 28px 20px;position:relative;}
+.chart-legend{display:flex;gap:20px;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-mid);}
+.leg-line{width:24px;height:4px;border-radius:2px;}
+.zoom-btn{position:absolute;top:16px;right:16px;background:var(--off);border:1px solid var(--border);cursor:pointer;padding:6px 10px;display:flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);transition:background .15s,color .15s;border-radius:2px;}
+.zoom-btn:hover{background:var(--red);color:#fff;border-color:var(--red);}
+.zoom-btn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.zoom-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,10,.82);z-index:500;align-items:center;justify-content:center;padding:32px;}
+.zoom-overlay.active{display:flex;}
+.zoom-box{background:var(--white);border:2px solid var(--border);padding:32px;width:100%;max-width:1200px;max-height:90vh;overflow-y:auto;position:relative;}
+.zoom-close{position:absolute;top:16px;right:16px;background:var(--red);border:none;color:#fff;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;}
+.zoom-close:hover{background:var(--red-dark);}
+.zoom-header{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--border);}
+.heatmap-panel{background:var(--white);border:1px solid var(--border);padding:24px 28px;margin-bottom:8px;overflow-x:auto;position:relative;}
+.hm-table{border-collapse:separate;border-spacing:3px;width:100%;table-layout:fixed;}
+.hm-table th{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ink-soft);text-align:center;padding:0 1px 8px;white-space:nowrap;overflow:hidden;}
+.hm-table th.row-head{text-align:right;padding-right:8px;width:62px;}
+.hm-table td.row-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--ink-mid);text-align:right;padding-right:8px;white-space:nowrap;width:62px;overflow:hidden;max-width:62px;}
+.hm-table td.cell{height:26px;text-align:center;vertical-align:middle;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;border-radius:1px;transition:transform .12s,box-shadow .12s;cursor:default;}
+.hm-table td.cell:hover{transform:scale(1.25);z-index:10;box-shadow:0 3px 14px rgba(0,0,0,.18);position:relative;}
+.c0{background:#f4f2f0;color:#ccc;}.c1{background:#fde8e8;color:#a83232;}.c2{background:#f9c9c9;color:#8a1818;}.c3{background:#f5a8a8;color:#6e0e0e;}.c4{background:#ee7070;color:#fff;}.c5{background:#d42a2a;color:#fff;}
+tr.total-row td.row-label{color:var(--ink);font-weight:800;font-size:9px;letter-spacing:.5px;}
+tr.total-row td.cell{font-weight:800;font-size:11px;}
+.c-tot-active{background:var(--red-dark)!important;color:#fff!important;}
+.c-tot-zero{background:#f4f2f0!important;color:#ccc!important;}
+.legend-row{display:flex;gap:16px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.leg-sq{display:flex;align-items:center;gap:7px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;color:var(--ink-soft);text-transform:uppercase;}
+.leg-dot{width:13px;height:13px;border-radius:1px;flex-shrink:0;}
+.eco-panel{background:var(--white);border:1px solid var(--border);overflow-x:auto;margin-bottom:8px;position:relative;}
+.eco-table{width:100%;border-collapse:collapse;min-width:1100px;}
+.eco-table thead tr{background:var(--ink);}
+.eco-table thead th{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:12px 10px;text-align:center;white-space:nowrap;}
+.eco-table thead th:first-child{text-align:left;background:var(--red);min-width:72px;}
+.eco-table tbody tr{border-bottom:1px solid var(--border);}
+.eco-table tbody tr:hover{background:#fdf0f0;}
+.eco-table tbody tr.grand{background:var(--ink)!important;}
+.eco-table tbody tr.grand td{color:#fff!important;font-weight:800;font-size:13px;}
+.eco-table tbody tr.grand td:first-child{background:var(--red-dark)!important;}
+.eco-table tbody td{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:500;padding:8px 10px;text-align:center;color:var(--ink-mid);white-space:nowrap;}
+.eco-table tbody td:first-child{font-weight:800;font-size:13px;color:#fff;background:var(--red);text-align:left;letter-spacing:1px;}
+.eco-table tbody tr:nth-child(even) td:not(:first-child){background:rgba(0,0,0,.018);}
+.pct-wrap{display:flex;align-items:center;gap:7px;justify-content:center;}
+.pct-bg{width:48px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;flex-shrink:0;}
+.pct-fill{height:100%;border-radius:3px;}
+.pct-txt{font-size:12px;font-weight:700;color:var(--ink);min-width:40px;text-align:left;}
+.pill{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:1px;}
+.pill-ok{background:#e6f5ee;color:#1a7a4b;}.pill-warn{background:#fff4e0;color:#c97a00;}.pill-bad{background:#fde8e8;color:var(--red);}
+.days-warn{color:var(--amber);font-weight:700;}.days-bad{color:var(--red);font-weight:700;}
+.report-footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.footer-logo-bar{background:var(--red);padding:3px 10px;}
+.footer-logo-bar span{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;color:#fff;letter-spacing:2px;}
+.footer-left{display:flex;align-items:center;gap:16px;}
+.footer-text{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:500;letter-spacing:1.5px;color:var(--ink-soft);text-transform:uppercase;}
+.footer-right{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;color:var(--ink-faint);text-transform:uppercase;}
+@media (max-width: 1024px) {
+  #report-content { padding: 32px 32px 56px; }
+  .navbar { padding: 0 28px; }
+  .nav-project { display: none; }
+  .report-title { font-size: 36px; }
+  #kpi-block { grid-template-columns: repeat(2,1fr) !important; }
+  #kpi-block > div:nth-child(5),#kpi-block > div:nth-child(6) { grid-column: span 2 !important; }
+  .gauge-area-row { grid-template-columns: 1fr !important; }
+  #analisis-box > div:last-child { grid-template-columns: 1fr !important; gap: 18px !important; }
+}
+@media (max-width: 640px) {
+  .navbar { padding: 0 16px; height: 60px; }
+  .logo-grupo { font-size: 8px; letter-spacing: 3px; }
+  .logo-sandstorm { font-size: 20px; }
+  .logo-gam-bar span { font-size: 14px; }
+  .nav-project { display: none; }
+  .btn-dl { padding: 8px 14px; font-size: 11px; letter-spacing: 1px; }
+  .btn-dl span { display: none; }
+  #report-content { padding: 20px 16px 48px; }
+  .report-header { grid-template-columns: 1fr !important; margin-bottom: 24px; padding-bottom: 18px; }
+  .report-header > div:last-child { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+  .meta-date { text-align: left; }
+  .report-eyebrow { font-size: 10px; margin-bottom: 6px; }
+  .report-title { font-size: 28px; line-height: 1; }
+  #kpi-block { grid-template-columns: 1fr !important; gap: 3px !important; margin-bottom: 12px !important; }
+  #kpi-block > div:nth-child(5),#kpi-block > div:nth-child(6) { grid-column: span 1 !important; }
+  #kpi-block > div { padding: 18px 16px 14px !important; }
+  #analisis-box { padding: 16px 16px !important; margin-bottom: 12px !important; }
+  #analisis-box > div:last-child { grid-template-columns: 1fr !important; gap: 20px !important; }
+  .section-head { margin-top: 24px; margin-bottom: 12px; }
+  .section-title-lbl { font-size: 11px; }
+  .gauge-area-row { grid-template-columns: 1fr !important; gap: 6px !important; }
+  .gauge-panel { padding: 24px 20px !important; }
+  #gaugeCanvas { width: 240px !important; height: 144px !important; }
+  .gauge-pct-big { font-size: 36px !important; }
+  .chart-panel { padding: 20px 16px 16px !important; }
+  .heatmap-panel { padding: 16px 12px !important; overflow-x: auto !important; }
+  .hm-table { table-layout: auto !important; width: auto !important; min-width: max-content !important; }
+  .hm-table td.cell { width: 28px !important; height: 22px !important; font-size: 10px !important; }
+  .hm-table th { font-size: 8px !important; }
+  .eco-panel { overflow-x: auto !important; }
+  .eco-table { min-width: 900px !important; }
+  .zoom-btn { display: none !important; }
+  .zoom-overlay { padding: 0; }
+  .zoom-box { padding: 20px 16px; max-height: 100vh; border-radius: 0; border: none; }
+  .report-footer { flex-direction: column; gap: 10px; align-items: flex-start; margin-top: 32px; }
+}
+@media print {
+  @page { size: A4 portrait; margin: 16mm 14mm 16mm 14mm; }
+  @page :first { margin-top: 12mm; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; box-shadow: none !important; }
+  html, .sdash-wrap { background: #fff !important; font-size: 10pt; }
+  .navbar, .zoom-btn, .zoom-overlay { display: none !important; }
+  #report-content { padding: 0 !important; max-width: 100% !important; width: 100% !important; }
+  .report-header { display: grid !important; grid-template-columns: 1fr auto !important; align-items: end !important; margin-bottom: 14px !important; padding-bottom: 12px !important; border-bottom: 2px solid #B22020 !important; }
+  .report-title { font-size: 26pt !important; line-height: 1 !important; }
+  .report-eyebrow { font-size: 8pt !important; margin-bottom: 6px !important; }
+  .meta-date { font-size: 9pt !important; }
+  .meta-badge { font-size: 8pt !important; padding: 3px 8px !important; }
+  #kpi-block { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 4px !important; margin-bottom: 0 !important; page-break-after: always !important; }
+  #kpi-block > div:nth-child(5) { grid-column: span 2 !important; }
+  #kpi-block > div:nth-child(6) { grid-column: span 2 !important; }
+  #kpi-block > div { padding: 16px 14px 14px !important; border-top-width: 4px !important; min-height: 80px !important; }
+  #kpi-block > div:nth-child(1) > div:nth-child(2),#kpi-block > div:nth-child(2) > div:nth-child(2) { font-size: 52pt !important; letter-spacing: -3px !important; }
+  #kpi-block > div:nth-child(3) > div:nth-child(2),#kpi-block > div:nth-child(4) > div:nth-child(2) { font-size: 28pt !important; letter-spacing: -1px !important; }
+  #analisis-box { page-break-before: always !important; page-break-inside: avoid !important; padding: 18px 20px !important; margin-bottom: 14px !important; border-left-width: 5px !important; }
+  #analisis-box > div:last-child { display: grid !important; grid-template-columns: 1fr 1fr 1fr !important; gap: 16px !important; }
+  .section-head { margin-top: 14px !important; margin-bottom: 8px !important; page-break-after: avoid !important; }
+  .gauge-area-row { display: grid !important; grid-template-columns: 200px 1fr !important; gap: 6px !important; page-break-inside: avoid !important; width: 100% !important; }
+  .gauge-panel { padding: 14px 12px 10px !important; }
+  #gaugeCanvas { width: 170px !important; height: 102px !important; }
+  .gauge-pct-big { font-size: 22pt !important; }
+  #areaChart { height: 200px !important; }
+  .heatmap-panel { page-break-before: always !important; page-break-inside: avoid !important; padding: 16px !important; overflow: visible !important; margin-bottom: 0 !important; width: 100% !important; }
+  .hm-table { border-spacing: 2px !important; width: 100% !important; table-layout: fixed !important; }
+  .hm-table th { font-size: 7pt !important; padding: 0 0 5px !important; }
+  .hm-table td.cell { height: 18px !important; font-size: 7pt !important; }
+  .eco-panel { page-break-before: always !important; overflow: visible !important; width: 100% !important; border: none !important; }
+  .eco-table { min-width: unset !important; width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
+  .eco-table thead th { font-size: 7pt !important; padding: 6px 4px !important; white-space: normal !important; word-break: break-word !important; line-height: 1.25 !important; }
+  .eco-table tbody td { font-size: 8pt !important; padding: 5px 4px !important; }
+  .eco-table th:nth-child(1),.eco-table td:nth-child(1){width:6%!important;}
+  .eco-table th:nth-child(2),.eco-table td:nth-child(2){width:3.5%!important;}
+  .eco-table th:nth-child(3),.eco-table td:nth-child(3){width:3.5%!important;}
+  .eco-table th:nth-child(4),.eco-table td:nth-child(4){width:8%!important;}
+  .eco-table th:nth-child(5),.eco-table td:nth-child(5){width:8%!important;}
+  .eco-table th:nth-child(6),.eco-table td:nth-child(6){width:7%!important;}
+  .eco-table th:nth-child(7),.eco-table td:nth-child(7){width:11%!important;}
+  .eco-table th:nth-child(8),.eco-table td:nth-child(8){width:10%!important;}
+  .eco-table th:nth-child(9),.eco-table td:nth-child(9){width:11%!important;}
+  .eco-table th:nth-child(10),.eco-table td:nth-child(10){width:8%!important;}
+  .eco-table th:nth-child(11),.eco-table td:nth-child(11){width:11%!important;}
+  .eco-table th:nth-child(12),.eco-table td:nth-child(12){width:6%!important;}
+  .eco-table th:nth-child(13),.eco-table td:nth-child(13){width:6%!important;}
+  .report-footer { margin-top: 12px !important; padding-top: 8px !important; border-top: 1px solid #e5e0dc !important; }
+}
+
+
+  .sdash-wrap{font-family:Arial,sans-serif;font-size:11pt;}
+  th{background:#1a1a1a;color:#ffffff;font-weight:bold;text-align:center;padding:6px 10px;border:1px solid #888;}
+  td{padding:5px 10px;border:1px solid #cccccc;text-align:center;}
+  td:first-child{text-align:left;font-weight:bold;background:#f6f4f2;}
+  tr:last-child td{background:#1a1a1a;color:#ffffff;font-weight:bold;}
+  tr:last-child td:first-child{background:#b22020;}
+  .num{text-align:right;}
+  .green{color:#1a7a4b;font-weight:bold;}
+  .blue{color:#185fa5;font-weight:bold;}
+  .red{color:#b22020;font-weight:bold;}
+
+
+
+/* ── BLUR: datos financieros sensibles ──────────────────────────────────── */
+.sdash-wrap .kpi-value.money,
+.sdash-wrap .gauge-amt-val,
+.sdash-wrap .gauge-amounts,
+.sdash-wrap [style*="$137"],
+.sdash-wrap [style*="$32.9"],
+.sdash-wrap [style*="$39.9"],
+.sdash-wrap [style*="$30.7"],
+.sdash-wrap [style*="$9.2"],
+.sdash-wrap [style*="$30,7"],
+.sdash-wrap [style*="$9,2"],
+.sdash-wrap [style*="$39,9"] {
+  filter: blur(5px);
+  user-select: none;
+}
+.sdash-blur {
+  filter: blur(5px) !important;
+  user-select: none;
+  pointer-events: none;
+}
+
+
+/* Blur columnas económicas sensibles en tabla */
+.sdash-wrap .eco-table tbody td:nth-child(7),
+.sdash-wrap .eco-table tbody td:nth-child(8),
+.sdash-wrap .eco-table tbody td:nth-child(9),
+.sdash-wrap .eco-table thead th:nth-child(7),
+.sdash-wrap .eco-table thead th:nth-child(8),
+.sdash-wrap .eco-table thead th:nth-child(9) {
+  filter: blur(4px);
+  user-select: none;
+}
+/* Blur cobro section */
+.sdash-wrap #kpi-block > div:nth-child(7) .sdash-blur,
+.sdash-wrap #cobro-row .sdash-blur {
+  filter: blur(5px);
+}
+
+
+/* ── IEB SLIDES VIEWER ──────────────────────────────────────────────────── */
+.ieb-viewer-wrap {
+  border: 1px solid var(--border-dim);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.ieb-viewer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: rgba(107,18,48,0.08);
+  border-bottom: 1px solid var(--border-dim);
+}
+.ieb-viewer-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--wine-light);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.ieb-viewer-count {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
+}
+.ieb-slides-strip {
+  display: flex;
+  gap: 6px;
+  padding: 16px;
+  overflow-x: auto;
+  background: #0d080b;
+  scrollbar-width: thin;
+  scrollbar-color: var(--wine-dim) transparent;
+}
+.ieb-slides-strip::-webkit-scrollbar { height: 4px; }
+.ieb-slides-strip::-webkit-scrollbar-track { background: transparent; }
+.ieb-slides-strip::-webkit-scrollbar-thumb { background: var(--wine-dim); border-radius: 2px; }
+.ieb-slide {
+  flex-shrink: 0;
+  width: 180px;
+  height: 101px;
+  object-fit: cover;
+  border-radius: 2px;
+  cursor: zoom-in;
+  opacity: 0.8;
+  border: 1px solid rgba(107,18,48,0.2);
+  transition: opacity 0.2s, border-color 0.2s, transform 0.2s;
+}
+.ieb-slide:hover {
+  opacity: 1;
+  border-color: var(--wine-light);
+  transform: scale(1.04);
+}
+.ieb-viewer-nav {
+  padding: 10px 20px;
+  background: rgba(0,0,0,0.2);
+  border-top: 1px solid var(--border-dim);
+}
+.ieb-viewer-hint {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 0.08em;
+}
+
+/* IEB LIGHTBOX */
+.ieb-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(5,3,4,0.95);
+  z-index: 600;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 24px;
+}
+.ieb-lightbox.active { display: flex; }
+.ieb-lb-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.ieb-lb-content img {
+  max-width: 85vw;
+  max-height: 82vh;
+  object-fit: contain;
+  border-radius: 3px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.7);
+}
+.ieb-lb-counter {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+  letter-spacing: 0.15em;
+  margin-top: 12px;
+}
+.ieb-lb-close {
+  position: absolute;
+  top: 16px; right: 20px;
+  background: none; border: none;
+  color: var(--text-2); font-size: 36px;
+  cursor: pointer; line-height: 1;
+  transition: color 0.2s; z-index: 10;
+}
+.ieb-lb-close:hover { color: var(--text-1); }
+.ieb-lb-prev, .ieb-lb-next {
+  background: rgba(107,18,48,0.3);
+  border: 1px solid var(--border);
+  color: var(--text-1);
+  font-size: 36px;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.ieb-lb-prev:hover, .ieb-lb-next:hover { background: var(--wine); }
+
+
+/* ── CV DOWNLOAD BUTTON ─────────────────────────────────────────────────── */
+.btn-download-cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 32px;
+  padding: 16px 32px;
+  background: transparent;
+  color: var(--text-1);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  border: 1px solid var(--wine);
+  border-radius: 3px;
+  transition: all 0.25s;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.btn-download-cv:hover { background: var(--wine); color: white; }
+.btn-download-cv svg {
+  width: 15px; height: 15px;
+  stroke: currentColor; fill: none;
+  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+}
+.cv-dl-note {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
+  margin-top: 10px;
+  display: block;
+}
+
+</style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">S<span>G</span>N</div>
+  <ul class="nav-links">
+    <li><a href="#about" data-en="About" data-es="Sobre mí">About</a></li>
+    <li><a href="#experience" data-en="Experience" data-es="Experiencia">Experience</a></li>
+    <li><a href="#projects" data-en="Projects" data-es="Proyectos">Projects</a></li>
+    <li><a href="#education" data-en="Education" data-es="Educación">Education</a></li>
+    <li><a href="#contact" data-en="Contact" data-es="Contacto">Contact</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-line"></div>
+  <div class="hero-bg-circle"></div>
+
+  <p class="hero-tag" data-en="Financial Analyst · Guadalajara, MX" data-es="Analista Financiero · Guadalajara, MX">Financial Analyst · Guadalajara, MX</p>
+  <h1 class="hero-name">
+    Sebastian<br>
+    <em>Gutierrez</em><br>
+    Naranjo
+  </h1>
+  <p class="hero-desc" data-en="Corporate finance meets modern tools. I build financial systems that clarify decisions, from KPI dashboards and CMI frameworks to AI-enhanced analysis and investment presentations." data-es="Las finanzas corporativas se encuentran con las herramientas modernas. Construyo sistemas financieros que clarifican decisiones: desde dashboards de KPIs y marcos CMI hasta análisis potenciado con IA y presentaciones de inversión.">
+    Corporate finance meets modern tools. I build financial systems that clarify decisions — from KPI dashboards and CMI frameworks to AI-enhanced analysis and investment presentations.
+  </p>
+  <div class="hero-cta">
+    <a href="mailto:sebastiangtznaranjo@gmail.com" class="btn-primary" data-en="Get in touch" data-es="Contáctame">Get in touch</a>
+    <a href="https://linkedin.com/in/sebastian-gutierrez-naranjo" target="_blank" class="btn-secondary" data-en="View LinkedIn" data-es="Ver LinkedIn">View LinkedIn</a>
+  </div>
+
+  <div class="hero-metrics">
+    <div class="metric">
+      <div class="metric-num">4<span>+</span></div>
+      <div class="metric-label" data-en="Years of training" data-es="Años de formación">Years of training</div>
+    </div>
+    <div class="metric">
+      <div class="metric-num">3<span>×</span></div>
+      <div class="metric-label" data-en="International programs" data-es="Programas internacionales">International programs</div>
+    </div>
+    <div class="metric">
+      <div class="metric-num">97<span>%</span></div>
+      <div class="metric-label" data-en="COGS reduction modeled" data-es="COGS reducido (modelado)">COGS reduction modeled</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-left">
+    <p class="sec-eyebrow" data-en="Who I am" data-es="Quién soy">Who I am</p>
+    <h2 class="sec-title" data-en="Analyst. Consultant.<br><em>Builder.</em>" data-es="Analista. Consultor.<br><em>Constructor.</em>">
+      Analyst. Consultant.<br><em>Builder.</em>
+    </h2>
+    <p class="about-text" data-en="I'm a financial analyst with hands-on experience in <strong>corporate finance, financial reporting, budgeting, and KPI dashboard design</strong> — built across real business environments in the geotechnical and construction sectors." data-es="Soy analista financiero con experiencia práctica en <strong>finanzas corporativas, reporteo financiero, presupuestos y diseño de dashboards de KPIs</strong> — construida en entornos empresariales reales en los sectores de geotecnia y construcción.">
+      I'm a financial analyst with hands-on experience in <strong>corporate finance, financial reporting, budgeting, and KPI dashboard design</strong> — built across real business environments in the geotechnical and construction sectors.
+    </p>
+    <p class="about-text" data-en="My edge: I combine a rigorous financial foundation with a modern, technology-forward mindset. I completed a 104-hour program in <strong>AI Applied to Financial Analysis</strong> at Tecnológico de Monterrey, and I'm internationally trained through two programs at <strong>IEB Madrid</strong>." data-es="Mi ventaja: combino una base financiera rigurosa con una mentalidad moderna orientada a la tecnología. Completé un programa de 104 horas en <strong>IA Aplicada al Análisis Financiero</strong> en el Tecnológico de Monterrey, y cuento con formación internacional a través de dos programas en <strong>IEB Madrid</strong>.">
+      My edge: I combine a rigorous financial foundation with a modern, technology-forward mindset. I completed a 104-hour program in <strong>AI Applied to Financial Analysis</strong> at Tecnológico de Monterrey, and I'm internationally trained through two programs at <strong>IEB Madrid</strong>.
+    </p>
+
+    <div class="about-facts" style="margin-top: 40px;">
+      <div class="fact">
+        <div class="fact-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        </div>
+        <div class="fact-content">
+          <div class="fact-label" data-en="Location" data-es="Ubicación">Location</div>
+          <div class="fact-value">Guadalajara, Jalisco, México</div>
+        </div>
+      </div>
+      <div class="fact">
+        <div class="fact-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+        </div>
+        <div class="fact-content">
+          <div class="fact-label" data-en="Degree" data-es="Carrera">Degree</div>
+          <div class="fact-value" data-en="B.S. Financial Administration — ITESO" data-es="Lic. Administración Financiera — ITESO">B.S. Financial Administration — ITESO</div>
+        </div>
+      </div>
+      <div class="fact">
+        <div class="fact-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="fact-content">
+          <div class="fact-label" data-en="Languages" data-es="Idiomas">Languages</div>
+          <div class="fact-value" data-en="Spanish (Native) · English B2 — IELTS" data-es="Español (Nativo) · Inglés B2 — IELTS">Spanish (Native) · English B2 — IELTS</div>
+        </div>
+      </div>
+      <div class="fact">
+        <div class="fact-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9l3 3 3-3M9 15l3-3 3 3"/></svg>
+        </div>
+        <div class="fact-content">
+          <div class="fact-label" data-en="Specialty" data-es="Especialidad">Specialty</div>
+          <div class="fact-value" data-en="AI-Enhanced Financial Analysis" data-es="Análisis Financiero con IA">AI-Enhanced Financial Analysis</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-right">
+    <div class="photo-frame">
+      <img src="assets/foto.jpg" alt="Sebastian Gutierrez Naranjo — ITESO Graduation">
+    </div>
+    <div class="photo-caption" data-en="Graduation Ceremony · IEB Madrid 2024" data-es="Ceremonia de Graduación · IEB Madrid 2024">Graduation Ceremony · IEB Madrid 2024</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="sec-eyebrow reveal" data-en="Where I've worked" data-es="Dónde he trabajado">Where I've worked</p>
+  <h2 class="sec-title reveal" data-en="Professional<br><em>Experience</em>" data-es="Experiencia<br><em>Profesional</em>">Professional<br><em>Experience</em></h2>
+
+  <div class="exp-grid">
+
+    <div class="exp-item reveal">
+      <div class="exp-left">
+        <div class="exp-period">Nov 2025 – <span data-en="Present" data-es="Presente">Present</span></div>
+        <div class="exp-org">Grupo Sandstormgam S.A. de C.V.</div>
+      </div>
+      <div class="exp-right">
+        <div class="exp-role" data-en="Financial Analyst" data-es="Analista Financiero">Financial Analyst</div>
+        <ul class="exp-bullets">
+          <li data-en="Design and maintain KPI dashboards and financial reporting structures tracking profitability, cash flow, and project-level cost performance." data-es="Diseño y mantenimiento de dashboards de KPIs y estructuras de reporteo financiero para seguimiento de rentabilidad, flujo de caja y desempeño por proyecto.">Design and maintain KPI dashboards and financial reporting structures tracking profitability, cash flow, and project-level cost performance.</li>
+          <li data-en="Lead the annual budgeting cycle and monthly financial close, including variance analysis against budget and prior periods." data-es="Liderazgo del ciclo de presupuestación anual y cierre mensual, incluyendo análisis de variaciones contra presupuesto y periodos anteriores.">Lead the annual budgeting cycle and monthly financial close, including variance analysis against budget and prior periods.</li>
+          <li data-en="Build financial reporting tools that translate complex operational data into clear, actionable summaries for non-financial decision-makers." data-es="Desarrollo de herramientas de reporteo financiero que traducen datos operativos complejos en resúmenes claros y accionables para tomadores de decisiones no financieros.">Build financial reporting tools that translate complex operational data into clear, actionable summaries for non-financial decision-makers.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-left">
+        <div class="exp-period"><span data-en="Jan" data-es="Ene">Jan</span> – <span data-en="Oct" data-es="Oct">Oct</span> 2025</div>
+        <div class="exp-org">Trudeal Asesores</div>
+      </div>
+      <div class="exp-right">
+        <div class="exp-role" data-en="Independent Financial Consultant" data-es="Consultor Financiero Independiente">Independent Financial Consultant</div>
+        <ul class="exp-bullets">
+          <li data-en="Delivered financial analysis and decision-support tools to real business advisory engagements in association with Trudeal Asesores." data-es="Entrega de análisis financiero y herramientas de soporte a la toma de decisiones en encargos reales de asesoría empresarial con Trudeal Asesores.">Delivered financial analysis and decision-support tools to real business advisory engagements.</li>
+          <li data-en="Conducted financial diagnostics and structured key indicators to improve management visibility in client companies." data-es="Diagnósticos financieros y estructuración de indicadores clave para mejorar la visibilidad financiera en empresas cliente.">Conducted financial diagnostics and structured key indicators to improve management visibility in client companies.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-left">
+        <div class="exp-period"><span data-en="Sep" data-es="Sep">Sep</span> – <span data-en="Dec" data-es="Dic">Dec</span> 2024</div>
+        <div class="exp-org">ITESO — PAP Program</div>
+      </div>
+      <div class="exp-right">
+        <div class="exp-role" data-en="Financial Consultant — THP Project" data-es="Consultor Financiero — Proyecto THP">Financial Consultant — THP Project</div>
+        <ul class="exp-bullets">
+          <li data-en="Led the full financial consulting workstream for THP (Transformadora de Hules y Plásticos), a manufacturing SME." data-es="Liderazgo del área financiera en consultoría real para THP (Transformadora de Hules y Plásticos), PyME manufacturera.">Led the full financial consulting workstream for THP (Transformadora de Hules y Plásticos), a manufacturing SME.</li>
+          <li data-en="Designed a custom Financial Balanced Scorecard (CMI) in Excel — integrating dynamic tables for sales, cost control, budgeting, and real-time KPI monitoring." data-es="Diseño de un Cuadro de Mando Integral (CMI) personalizado en Excel con tablas dinámicas para ventas, costos, presupuesto y monitoreo de KPIs.">Designed a custom Financial Balanced Scorecard (CMI) in Excel — integrating dynamic tables for sales, cost control, budgeting, and real-time KPI monitoring.</li>
+          <li data-en="Identified COGS at 97% of revenue in 2022 and modeled a pricing strategy projecting recovery to positive net income margin by 2025." data-es="Identificó COGS en el 97% de los ingresos en 2022 y modeló una estrategia de precios proyectando recuperación a margen de utilidad neta positivo en 2025.">Identified COGS at 97% of revenue in 2022 and modeled a pricing strategy projecting recovery to positive net income margin by 2025.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="sec-eyebrow reveal" data-en="What I've built" data-es="Lo que he construido">What I've built</p>
+  <h2 class="sec-title reveal" data-en="Selected<br><em>Projects</em>" data-es="Proyectos<br><em>Destacados</em>">Selected<br><em>Projects</em></h2>
+
+  <div class="projects-grid">
+
+    <!-- PROJECT 1: THP CMI with real screenshots -->
+    <div class="project-card reveal">
+      <div class="project-card-inner">
+        <div class="project-card-text">
+          <p class="project-tag" data-en="Financial Dashboard · 2024" data-es="Dashboard Financiero · 2024">Financial Dashboard · 2024</p>
+          <h3 class="project-title" data-en="Financial Balanced Scorecard — THP" data-es="Cuadro de Mando Integral — THP">Financial Balanced Scorecard — THP</h3>
+          <p class="project-desc" data-en="Custom CMI designed in Excel for THP, a manufacturing SME. Covered 3-year financial analysis, income statements, break-even modeling, KPI tracking, and multi-year projections with adjusted pricing scenarios. Presented to the client's management team." data-es="CMI personalizado diseñado en Excel para THP, una PyME manufacturera. Incluyó análisis financiero de 3 años, estados de resultados, modelado de punto de equilibrio, KPIs y proyecciones con escenarios de precio ajustado.">Custom CMI designed in Excel for THP, a manufacturing SME. Covered 3-year financial analysis, income statements, break-even modeling, KPI tracking, and multi-year projections with adjusted pricing scenarios. Data shown is illustrative.</p>
+          <div class="project-pills">
+            <span class="pill">Excel</span>
+            <span class="pill">Financial Analysis</span>
+            <span class="pill">KPI Dashboard</span>
+            <span class="pill">Break-Even</span>
+            <span class="pill">Projections</span>
+          </div>
+          <div class="slides-note" style="margin-top: 24px;">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            <span class="slides-note-text" data-en="Final presentation delivered to THP management team · ITESO PAP 2024" data-es="Presentación final entregada al equipo directivo de THP · ITESO PAP 2024">Final presentation delivered to THP management team · ITESO PAP 2024</span>
+          </div>
+        </div>
+        <div class="project-card-media">
+          <div class="screenshots-row" style="grid-template-columns: 1fr; height: 100%;">
+            <img src="assets/cmi_dashboard.png" alt="CMI Dashboard THP" onclick="openLightbox(this.src)" style="height: 50%; cursor:zoom-in;">
+            <img src="assets/cmi_objetivos.png" alt="CMI Objectives THP" onclick="openLightbox(this.src)" style="height: 50%; cursor:zoom-in;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 2: Sandstorm Dashboard -->
+    <div class="project-card reveal">
+      <div class="project-card-simple">
+        <p class="project-tag" data-en="KPI Dashboard · 2025–Present" data-es="Dashboard KPI · 2025–Presente">KPI Dashboard · 2025–Present</p>
+        <h3 class="project-title" data-en="Financial Reporting Dashboard — Sandstorm GAM" data-es="Dashboard de Reporteo Financiero — Sandstorm GAM">Financial Reporting Dashboard — Sandstorm GAM</h3>
+        <p class="project-desc" data-en="Operational financial dashboard built for Grupo Sandstorm, tracking project-level KPIs, budget execution, cost heatmaps, and cash flow in real time. Designed to translate raw financial data into actionable executive summaries." data-es="Dashboard financiero operativo construido para Grupo Sandstorm, que rastrea KPIs por proyecto, ejecución de presupuesto, mapas de calor de costos y flujo de caja en tiempo real.">Operational financial dashboard built for Grupo Sandstorm, tracking project-level KPIs, budget execution, cost heatmaps, and cash flow. Designed to translate raw financial data into actionable executive summaries.</p>
+        <div class="project-pills">
+          <span class="pill">HTML/CSS</span>
+          <span class="pill">KPI Tracking</span>
+          <span class="pill">Budget Analysis</span>
+          <span class="pill">Data Visualization</span>
+          <span class="pill">Executive Reporting</span>
+        </div>
+        <div class="dashboard-embed-wrap">
+          <div class="dashboard-embed-header">
+            <span class="dashboard-embed-label">Live Preview — Sandstorm Dashboard</span>
+            <span class="dashboard-embed-badge" data-en="Illustrative scenario · Confidential data hidden" data-es="Escenario ilustrativo · Datos confidenciales ocultos">Illustrative scenario · Confidential data hidden</span>
+          </div>
+          <div class="dashboard-iframe-wrap">
+            <iframe src="dashboard/sandstorm.html" title="Sandstorm Financial Dashboard" style="width:100%;height:700px;border:none;" sandbox="allow-scripts allow-same-origin"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 3: BlackRock / IEB -->
+    <div class="project-card reveal">
+      <div class="project-card-simple">
+        <p class="project-tag" data-en="Investment Analysis · 2023" data-es="Análisis de Inversión · 2023">Investment Analysis · 2023</p>
+        <h3 class="project-title" data-en="Portfolio Management — IEB Madrid / BlackRock" data-es="Gestión de Carteras — IEB Madrid / BlackRock">Portfolio Management — IEB Madrid / BlackRock</h3>
+        <p class="project-desc" data-en="Comprehensive investment portfolio analysis developed as the final deliverable of the IEB Madrid Specialization in Portfolio Management & Securities Analysis. Presented to BlackRock-affiliated professionals. Covered equities, ETFs, REITs, bonds, fundamental & technical analysis, and portfolio construction." data-es="Análisis de portafolio de inversión completo desarrollado como entregable final de la Especialización del IEB Madrid en Análisis Bursátil y Gestión de Carteras. Presentado ante profesionales vinculados a BlackRock. Abarcó acciones, ETFs, REITs, bonos, análisis fundamental y técnico.">Comprehensive investment portfolio analysis developed as the final deliverable of the IEB Madrid Specialization. Presented to BlackRock-affiliated professionals. Covered equities, ETFs, REITs, bonds, fundamental & technical analysis, and portfolio construction.</p>
+        <div class="project-pills">
+          <span class="pill">Portfolio Management</span>
+          <span class="pill">Securities Analysis</span>
+          <span class="pill">Equities & ETFs</span>
+          <span class="pill">REITs</span>
+          <span class="pill">Fixed Income</span>
+        </div>
+        <div class="slides-note" style="margin-top: 24px;">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <span class="slides-note-text" data-en="Final presentation delivered to BlackRock-affiliated panel · IEB Madrid, July 2023" data-es="Presentación final ante panel vinculado a BlackRock · IEB Madrid, julio 2023">Final presentation delivered to BlackRock-affiliated panel · IEB Madrid, July 2023</span>
+        </div>
+
+        <div class="ieb-viewer-wrap" style="margin-top:28px;">
+          <div class="ieb-viewer-header">
+            <span class="ieb-viewer-label">Presentación Final · IEB Madrid 2023</span>
+            <span class="ieb-viewer-count">30 diapositivas</span>
+          </div>
+          <div class="ieb-slides-strip">
+            <img class="ieb-slide" src="slides/slide-01.jpg" alt="Slide 1" data-index="0" onclick="iebLightbox(0)">
+            <img class="ieb-slide" src="slides/slide-02.jpg" alt="Slide 2" data-index="1" onclick="iebLightbox(1)">
+            <img class="ieb-slide" src="slides/slide-03.jpg" alt="Slide 3" data-index="2" onclick="iebLightbox(2)">
+            <img class="ieb-slide" src="slides/slide-04.jpg" alt="Slide 4" data-index="3" onclick="iebLightbox(3)">
+            <img class="ieb-slide" src="slides/slide-05.jpg" alt="Slide 5" data-index="4" onclick="iebLightbox(4)">
+            <img class="ieb-slide" src="slides/slide-06.jpg" alt="Slide 6" data-index="5" onclick="iebLightbox(5)">
+            <img class="ieb-slide" src="slides/slide-07.jpg" alt="Slide 7" data-index="6" onclick="iebLightbox(6)">
+            <img class="ieb-slide" src="slides/slide-08.jpg" alt="Slide 8" data-index="7" onclick="iebLightbox(7)">
+            <img class="ieb-slide" src="slides/slide-09.jpg" alt="Slide 9" data-index="8" onclick="iebLightbox(8)">
+            <img class="ieb-slide" src="slides/slide-10.jpg" alt="Slide 10" data-index="9" onclick="iebLightbox(9)">
+            <img class="ieb-slide" src="slides/slide-11.jpg" alt="Slide 11" data-index="10" onclick="iebLightbox(10)">
+            <img class="ieb-slide" src="slides/slide-12.jpg" alt="Slide 12" data-index="11" onclick="iebLightbox(11)">
+            <img class="ieb-slide" src="slides/slide-13.jpg" alt="Slide 13" data-index="12" onclick="iebLightbox(12)">
+            <img class="ieb-slide" src="slides/slide-14.jpg" alt="Slide 14" data-index="13" onclick="iebLightbox(13)">
+            <img class="ieb-slide" src="slides/slide-15.jpg" alt="Slide 15" data-index="14" onclick="iebLightbox(14)">
+            <img class="ieb-slide" src="slides/slide-16.jpg" alt="Slide 16" data-index="15" onclick="iebLightbox(15)">
+            <img class="ieb-slide" src="slides/slide-17.jpg" alt="Slide 17" data-index="16" onclick="iebLightbox(16)">
+            <img class="ieb-slide" src="slides/slide-18.jpg" alt="Slide 18" data-index="17" onclick="iebLightbox(17)">
+            <img class="ieb-slide" src="slides/slide-19.jpg" alt="Slide 19" data-index="18" onclick="iebLightbox(18)">
+            <img class="ieb-slide" src="slides/slide-20.jpg" alt="Slide 20" data-index="19" onclick="iebLightbox(19)">
+            <img class="ieb-slide" src="slides/slide-21.jpg" alt="Slide 21" data-index="20" onclick="iebLightbox(20)">
+            <img class="ieb-slide" src="slides/slide-22.jpg" alt="Slide 22" data-index="21" onclick="iebLightbox(21)">
+            <img class="ieb-slide" src="slides/slide-23.jpg" alt="Slide 23" data-index="22" onclick="iebLightbox(22)">
+            <img class="ieb-slide" src="slides/slide-24.jpg" alt="Slide 24" data-index="23" onclick="iebLightbox(23)">
+            <img class="ieb-slide" src="slides/slide-25.jpg" alt="Slide 25" data-index="24" onclick="iebLightbox(24)">
+            <img class="ieb-slide" src="slides/slide-26.jpg" alt="Slide 26" data-index="25" onclick="iebLightbox(25)">
+            <img class="ieb-slide" src="slides/slide-27.jpg" alt="Slide 27" data-index="26" onclick="iebLightbox(26)">
+            <img class="ieb-slide" src="slides/slide-28.jpg" alt="Slide 28" data-index="27" onclick="iebLightbox(27)">
+            <img class="ieb-slide" src="slides/slide-29.jpg" alt="Slide 29" data-index="28" onclick="iebLightbox(28)">
+            <img class="ieb-slide" src="slides/slide-30.jpg" alt="Slide 30" data-index="29" onclick="iebLightbox(29)">
+          </div>
+          <div class="ieb-viewer-nav">
+            <span class="ieb-viewer-hint">Clic en cualquier diapositiva para verla a pantalla completa</span>
+          </div>
+        </div>
+        <div class="ieb-lightbox" id="iebLightbox" onclick="closeIebLightbox(event)">
+          <button class="ieb-lb-close" onclick="closeIebLightbox(event)">×</button>
+          <button class="ieb-lb-prev" onclick="iebNav(-1, event)">&#8249;</button>
+          <div class="ieb-lb-content">
+            <img id="iebLbImg" src="" alt="">
+            <div class="ieb-lb-counter" id="iebLbCounter">1 / 30</div>
+          </div>
+          <button class="ieb-lb-next" onclick="iebNav(1, event)">&#8250;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 4: Trudeal / FinSebra -->
+    <div class="project-card reveal">
+      <div class="project-card-simple">
+        <p class="project-tag" data-en="Consulting · 2025" data-es="Consultoría · 2025">Consulting · 2025</p>
+        <h3 class="project-title" data-en="Financial Advisory — Trudeal Asesores" data-es="Asesoría Financiera — Trudeal Asesores">Financial Advisory — Trudeal Asesores</h3>
+        <p class="project-desc" data-en="Independent financial consulting collaboration. Delivered financial diagnostics, performance analysis, and structured decision-support frameworks for client companies across multiple sectors." data-es="Colaboración de consultoría financiera independiente. Entrega de diagnósticos financieros, análisis de desempeño y marcos de soporte a la toma de decisiones para empresas cliente en múltiples sectores.">Independent financial consulting collaboration. Delivered financial diagnostics, performance analysis, and structured decision-support frameworks for client companies across multiple sectors.</p>
+        <div class="project-pills">
+          <span class="pill">Consulting</span>
+          <span class="pill">Financial Diagnostics</span>
+          <span class="pill">Decision Support</span>
+          <span class="pill">Reporting</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 5: FinSebra -->
+    <div class="project-card reveal">
+      <div class="project-card-simple">
+        <p class="project-tag" data-en="Venture · 2024–Present" data-es="Iniciativa · 2024–Presente">Venture · 2024–Present</p>
+        <h3 class="project-title">FinSebra</h3>
+        <p class="project-desc" data-en="Financial tools and dashboard frameworks built to make corporate finance more accessible for SMEs and entrepreneurs. Templates, decision-support models, and practical financial instruments for businesses without dedicated finance teams." data-es="Herramientas financieras y frameworks de dashboards diseñados para hacer las finanzas corporativas más accesibles para PyMEs y emprendedores. Plantillas, modelos de apoyo a la toma de decisiones e instrumentos financieros prácticos para negocios sin áreas financieras especializadas.">Financial tools and dashboard frameworks built to make corporate finance more accessible for SMEs and entrepreneurs. Templates, decision-support models, and practical financial instruments for businesses without dedicated finance teams.</p>
+        <div class="project-pills">
+          <span class="pill">Financial Tools</span>
+          <span class="pill">SME Finance</span>
+          <span class="pill">Dashboards</span>
+          <span class="pill">Templates</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <p class="sec-eyebrow reveal" data-en="Academic background" data-es="Formación académica">Academic background</p>
+  <h2 class="sec-title reveal" data-en="Education &<br><em>Training</em>" data-es="Educación y<br><em>Formación</em>">Education &<br><em>Training</em></h2>
+
+  <div class="edu-grid">
+
+    <div class="edu-item reveal">
+      <div>
+        <div class="edu-period">2020 – 2025</div>
+        <div class="edu-institution">ITESO – Guadalajara</div>
+      </div>
+      <div>
+        <div class="edu-degree" data-en="B.S. in Financial Administration" data-es="Lic. en Administración Financiera">B.S. in Financial Administration</div>
+        <div class="edu-note" data-en="Corporate Finance · Business Valuation · Cost Analysis · Budgeting & Financial Planning · Financial Statement Analysis" data-es="Finanzas Corporativas · Valuación de Empresas · Análisis de Costos · Presupuesto y Planeación Financiera · Análisis de Estados Financieros">Corporate Finance · Business Valuation · Cost Analysis · Budgeting & Financial Planning · Financial Statement Analysis</div>
+      </div>
+    </div>
+
+    <div class="edu-item reveal">
+      <div>
+        <div class="edu-period">Nov 2025 – Feb 2026</div>
+        <div class="edu-institution">Tecnológico de Monterrey</div>
+      </div>
+      <div>
+        <div class="edu-degree" data-en="Diploma — AI Applied to Financial Analysis" data-es="Diplomado — IA Aplicada al Análisis Financiero">Diploma — AI Applied to Financial Analysis</div>
+        <div class="edu-note" data-en="104 hours · AI tools · Prompt engineering · AI-enhanced Excel · Interactive dashboard design" data-es="104 horas · Herramientas de IA · Prompt engineering · Excel con IA · Diseño de dashboards interactivos">104 hours · AI tools · Prompt engineering · AI-enhanced Excel · Interactive dashboard design</div>
+      </div>
+    </div>
+
+    <div class="edu-item reveal">
+      <div>
+        <div class="edu-period">Jul 2023</div>
+        <div class="edu-institution">IEB Madrid</div>
+      </div>
+      <div>
+        <div class="edu-degree" data-en="Specialization — Portfolio Management & Securities Analysis" data-es="Especialización — Análisis Bursátil y Gestión de Carteras">Specialization — Portfolio Management & Securities Analysis</div>
+        <div class="edu-note" data-en="Portfolio construction · Fundamental & technical analysis · Equities · ETFs · REITs · Bonds · Presented to BlackRock-affiliated professionals" data-es="Construcción de portafolios · Análisis fundamental y técnico · Acciones · ETFs · REITs · Bonos · Presentación ante profesionales vinculados a BlackRock">Portfolio construction · Fundamental & technical analysis · Equities · ETFs · REITs · Bonds · Presented to BlackRock-affiliated professionals</div>
+      </div>
+    </div>
+
+    <div class="edu-item reveal">
+      <div>
+        <div class="edu-period">Jul 2024</div>
+        <div class="edu-institution">IEB Madrid</div>
+      </div>
+      <div>
+        <div class="edu-degree" data-en="Summer Program — International Business Management" data-es="Summer Program — Dirección de Empresas Internacionales">Summer Program — International Business Management</div>
+        <div class="edu-note" data-en="Global business strategy · International enterprise management · European business environment" data-es="Estrategia de negocios globales · Dirección empresarial internacional · Entorno de negocios europeo">Global business strategy · International enterprise management · European business environment</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SKILLS -->
+  <div style="margin-top: 80px;">
+    <p class="sec-eyebrow reveal" data-en="What I work with" data-es="Con qué trabajo">What I work with</p>
+    <div class="skills-grid reveal" style="margin-top: 32px;">
+      <div class="skill-group">
+        <div class="skill-group-label" data-en="Finance" data-es="Finanzas">Finance</div>
+        <div class="skill-list">
+          <div class="skill-item">Financial Analysis</div>
+          <div class="skill-item">Corporate Finance</div>
+          <div class="skill-item">Financial Reporting</div>
+          <div class="skill-item">Budgeting & FP&A</div>
+          <div class="skill-item">Business Valuation</div>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label" data-en="Tools" data-es="Herramientas">Tools</div>
+        <div class="skill-list">
+          <div class="skill-item">Microsoft Excel (Advanced)</div>
+          <div class="skill-item">KPI Dashboard Design</div>
+          <div class="skill-item">AI-Enhanced Analysis</div>
+          <div class="skill-item">Financial Modeling</div>
+          <div class="skill-item">Dynamic Tables</div>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label" data-en="Analytical" data-es="Analíticas">Analytical</div>
+        <div class="skill-list">
+          <div class="skill-item">Financial Statement Analysis</div>
+          <div class="skill-item">Ratio Analysis</div>
+          <div class="skill-item">Break-Even Modeling</div>
+          <div class="skill-item">Cost Structure Analysis</div>
+          <div class="skill-item">Multi-year Projections</div>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label" data-en="Languages" data-es="Idiomas">Languages</div>
+        <div class="skill-list" style="gap: 0;">
+          <div style="margin-bottom: 16px;">
+            <div class="lang-name">Español</div>
+            <div class="lang-level" data-en="Native" data-es="Nativo">Native</div>
+          </div>
+          <div>
+            <div class="lang-name">English</div>
+            <div class="lang-level">Upper Intermediate — B2</div>
+            <div class="lang-cert">IELTS Certified</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="sec-eyebrow reveal" data-en="Get in touch" data-es="Contacto">Get in touch</p>
+  <h2 class="contact-title reveal">
+    <span data-en="Let's work" data-es="Trabajemos">Let's work</span><br><em data-en="together." data-es="juntos.">together.</em>
+  </h2>
+  <p class="contact-sub reveal" data-en="Open to opportunities in Corporate Finance, FP&A, Strategic Finance, and Financial Analysis. Available for full-time roles and consulting projects." data-es="Abierto a oportunidades en Finanzas Corporativas, FP&A, Finanzas Estratégicas y Análisis Financiero. Disponible para roles de tiempo completo y proyectos de consultoría.">
+    Open to opportunities in Corporate Finance, FP&A, Strategic Finance, and Financial Analysis. Available for full-time roles and consulting projects.
+  </p>
+  <a href="mailto:sebastiangtznaranjo@gmail.com" class="contact-email reveal">
+    sebastiangtznaranjo@gmail.com
+  </a>
+  <div class="contact-links reveal">
+    <a href="https://linkedin.com/in/sebastian-gutierrez-naranjo" target="_blank" class="btn-secondary">LinkedIn</a>
+    <a href="tel:+523319906221" class="btn-secondary">+52 331 990 6221</a>
+  </div>
+
+  <div class="reveal" style="margin-top: 0;">
+    <button class="btn-download-cv" onclick="downloadCV()">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span data-en="Download CV · ATS Optimized" data-es="Descargar CV · Optimizado ATS">Download CV · ATS Optimized</span>
+    </button>
+    <span class="cv-dl-note" data-en=".docx · No images · Compatible with all ATS systems · 2026 format" data-es=".docx · Sin imágenes · Compatible con todos los ATS · Formato 2026">.docx · No images · Compatible with all ATS systems · 2026 format</span>
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Sebastian Gutierrez Naranjo</div>
+  <div class="footer-copy">© 2025 · Financial Analyst · Guadalajara, México</div>
+</footer>
+
+<script>
+  // ── LIGHTBOX ──────────────────────────────────────────────────────────────
+  function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // ── LANGUAGE TOGGLE ──────────────────────────────────────────────────────
+  let currentLang = 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.lang-btn:${lang === 'en' ? 'first' : 'last'}-child`).classList.add('active');
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const val = el.getAttribute(`data-${lang}`);
+      if (val) el.innerHTML = val;
+    });
+  }
+
+  // ── SCROLL REVEAL ────────────────────────────────────────────────────────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── NAV ACTIVE ────────────────────────────────────────────────────────────
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => {
+      if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text-1)' : '';
+    });
+  });
+</script>
+<script>
+
+
+// ── IEB SLIDES VIEWER ─────────────────────────────────────────────────────
+const iebSlides = [
+  "slides/slide-01.jpg",
+  "slides/slide-02.jpg",
+  "slides/slide-03.jpg",
+  "slides/slide-04.jpg",
+  "slides/slide-05.jpg",
+  "slides/slide-06.jpg",
+  "slides/slide-07.jpg",
+  "slides/slide-08.jpg",
+  "slides/slide-09.jpg",
+  "slides/slide-10.jpg",
+  "slides/slide-11.jpg",
+  "slides/slide-12.jpg",
+  "slides/slide-13.jpg",
+  "slides/slide-14.jpg",
+  "slides/slide-15.jpg",
+  "slides/slide-16.jpg",
+  "slides/slide-17.jpg",
+  "slides/slide-18.jpg",
+  "slides/slide-19.jpg",
+  "slides/slide-20.jpg",
+  "slides/slide-21.jpg",
+  "slides/slide-22.jpg",
+  "slides/slide-23.jpg",
+  "slides/slide-24.jpg",
+  "slides/slide-25.jpg",
+  "slides/slide-26.jpg",
+  "slides/slide-27.jpg",
+  "slides/slide-28.jpg",
+  "slides/slide-29.jpg",
+  "slides/slide-30.jpg",
+];
+
+let iebCurrent = 0;
+
+function iebLightbox(idx) {
+  iebCurrent = idx;
+  document.getElementById('iebLbImg').src = iebSlides[idx];
+  document.getElementById('iebLbCounter').textContent = (idx+1) + ' / ' + iebSlides.length;
+  document.getElementById('iebLightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeIebLightbox(e) {
+  if (e.target === document.getElementById('iebLightbox') || e.target.classList.contains('ieb-lb-close')) {
+    document.getElementById('iebLightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+function iebNav(dir, e) {
+  e.stopPropagation();
+  iebCurrent = (iebCurrent + dir + iebSlides.length) % iebSlides.length;
+  document.getElementById('iebLbImg').src = iebSlides[iebCurrent];
+  document.getElementById('iebLbCounter').textContent = (iebCurrent+1) + ' / ' + iebSlides.length;
+}
+
+document.addEventListener('keydown', e => {
+  const lb = document.getElementById('iebLightbox');
+  if (!lb.classList.contains('active')) return;
+  if (e.key === 'ArrowRight') iebNav(1, e);
+  if (e.key === 'ArrowLeft') iebNav(-1, e);
+  if (e.key === 'Escape') { lb.classList.remove('active'); document.body.style.overflow = ''; }
+});
+
+
+
+// ── CV DOWNLOAD ───────────────────────────────────────────────────────────
+function downloadCV() {
+  const a = document.createElement('a');
+  a.href = 'cv/Sebastian_Gutierrez_Naranjo_CV.docx';
+  a.download = 'Sebastian_Gutierrez_Naranjo_CV.docx';
+  a.click();
+}
+
+</script>
+</body>
+</html>
